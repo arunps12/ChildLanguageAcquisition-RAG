@@ -3,7 +3,8 @@
 from langgraph.graph import StateGraph, END
 
 from childlanguagenet.state.rag_state import RAGState
-from childlanguagenet.nodes.rag_nodes import RAGNodes
+#from childlanguagenet.node.rag_nodes import RAGNodes
+from childlanguagenet.node.react_node import RAGNodes 
 
 
 class GraphBuilder:
