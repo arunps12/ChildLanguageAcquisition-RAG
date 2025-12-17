@@ -20,7 +20,7 @@ class Config:
     # -----------------------
     # Paths
     # -----------------------
-    PROJECT_ROOT = Path(__file__).resolve().parents[1]
+    PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
     DATA_DIR = PROJECT_ROOT / "data"
     METADATA_FILE = DATA_DIR / "metadata.json"

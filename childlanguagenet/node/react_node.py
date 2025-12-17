@@ -4,7 +4,8 @@ from __future__ import annotations
 
 from typing import List, Optional
 
-from langchain.schema import Document
+#from langchain.schema import Document
+from langchain_core.documents import Document
 from langchain_core.tools import Tool
 from langchain_core.messages import HumanMessage
 from langgraph.prebuilt import create_react_agent

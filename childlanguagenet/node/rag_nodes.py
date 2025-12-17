@@ -2,7 +2,8 @@
 
 from typing import List
 
-from langchain.schema import Document
+#from langchain.schema import Document
+from langchain_core.documents import Document
 
 from childlanguagenet.state.rag_state import RAGState, Citation
 

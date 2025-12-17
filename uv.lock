@@ -291,10 +291,12 @@ dependencies = [
     { name = "ipykernel" },
     { name = "langchain" },
     { name = "langchain-community" },
+    { name = "langchain-core" },
     { name = "langchain-openai" },
     { name = "langgraph" },
     { name = "openai" },
     { name = "pydantic" },
+    { name = "pypdf" },
     { name = "python-dotenv" },
     { name = "requests" },
     { name = "streamlit" },
@@ -308,10 +310,12 @@ requires-dist = [
     { name = "ipykernel", specifier = ">=7.1.0" },
     { name = "langchain", specifier = ">=1.2.0" },
     { name = "langchain-community", specifier = ">=0.4.1" },
+    { name = "langchain-core", specifier = ">=1.2.2" },
     { name = "langchain-openai", specifier = ">=1.1.4" },
     { name = "langgraph", specifier = ">=1.0.5" },
     { name = "openai", specifier = ">=2.13.0" },
     { name = "pydantic", specifier = ">=2.12.5" },
+    { name = "pypdf", specifier = ">=6.4.2" },
     { name = "python-dotenv", specifier = ">=1.2.1" },
     { name = "requests", specifier = ">=2.32.5" },
     { name = "streamlit", specifier = ">=1.52.1" },
@@ -1739,6 +1743,15 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/b0/77/a5b8c569bf593b0140bde72ea885a803b82086995367bf2037de0159d924/pygments-2.19.2.tar.gz", hash = "sha256:636cb2477cec7f8952536970bc533bc43743542f70392ae026374600add5b887", size = 4968631, upload-time = "2025-06-21T13:39:12.283Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/c7/21/705964c7812476f378728bdf590ca4b771ec72385c533964653c68e86bdc/pygments-2.19.2-py3-none-any.whl", hash = "sha256:86540386c03d588bb81d44bc3928634ff26449851e99741617ecb9037ee5ec0b", size = 1225217, upload-time = "2025-06-21T13:39:07.939Z" },
+]
+
+[[package]]
+name = "pypdf"
+version = "6.4.2"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/bd/c2/b59b02ff7f2dc006799d2c5dc3a8877686890abdd915176ef799070edf17/pypdf-6.4.2.tar.gz", hash = "sha256:c466ff1272ffb4712c2348d2bbc3019bc93f1c62ccfaf50808e3b9f13c3dc527", size = 5275502, upload-time = "2025-12-14T14:30:58.58Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/38/99/3147435e15ccd97c0451efc3d13495dc22602e9887f81e64f1b135bae821/pypdf-6.4.2-py3-none-any.whl", hash = "sha256:014dcff867fd99fc0b6fc90ed1f7e1347ef2317ae038a489c2caa64106d268f4", size = 328212, upload-time = "2025-12-14T14:30:56.701Z" },
 ]
 
 [[package]]

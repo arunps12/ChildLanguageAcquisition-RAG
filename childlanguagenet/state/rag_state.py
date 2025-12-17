@@ -2,7 +2,8 @@
 
 from typing import Any, Dict, List, Optional
 from pydantic import BaseModel, Field
-from langchain.schema import Document
+#from langchain.schema import Document
+from langchain_core.documents import Document
 
 from childlanguagenet.config.config import Config
 class Citation(BaseModel):

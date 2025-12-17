@@ -1,4 +1,5 @@
 langchain
+langchain-core
 langchain-community
 langchain-openai
 langgraph
@@ -10,3 +11,4 @@ beautifulsoup4
 requests
 streamlit
 wikipedia
+pypdf

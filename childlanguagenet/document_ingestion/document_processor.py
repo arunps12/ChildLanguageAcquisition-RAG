@@ -12,7 +12,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Union
 
-from langchain.schema import Document
+#from langchain.schema import Document
+from langchain_core.documents import Document
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import WebBaseLoader, PyPDFLoader
 
