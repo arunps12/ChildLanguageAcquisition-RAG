@@ -16,7 +16,7 @@ from langchain.schema import Document
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import WebBaseLoader, PyPDFLoader
 
-
+from childlanguagenet.config.config import Config
 @dataclass(frozen=True)
 class PaperRecord:
     """Paper-level metadata as defined in metadata.json."""
@@ -38,13 +38,13 @@ class DocumentProcessor:
 
     def __init__(
         self,
-        data_dir: Union[str, Path] = "data",
-        metadata_filename: str = "metadata.json",
-        chunk_size: int = 500,
-        chunk_overlap: int = 50,
+        data_dir: Union[str, Path] = Config.DATA_DIR,
+        metadata_path: Union[str, Path] = Config.METADATA_FILE,
+        chunk_size: int = Config.CHUNK_SIZE,
+        chunk_overlap: int = Config.CHUNK_OVERLAP,
     ):
         self.data_dir = Path(data_dir)
-        self.metadata_path = self.data_dir / metadata_filename
+        self.metadata_path = Path(metadata_path)
 
         self.chunk_size = chunk_size
         self.chunk_overlap = chunk_overlap
