@@ -1,7 +1,7 @@
 [project]
 name = "childlanguageacquisition-rag"
 version = "0.1.0"
-description = "Add your description here"
+description = "RAG-based document search and Q&A for child language acquisition research literature."
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = []
