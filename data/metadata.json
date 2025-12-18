@@ -176,5 +176,196 @@
     "open_access": true,
     "source_url": "https://pubs.asha.org/doi/epdf/10.1044/1092-4388%282010/09-0005%29",
     "pdf_file": "pdf/green_2010_lip_movement_exaggeration_ids.pdf"
-  }
+  },
+  {
+  "paper_id": "cristia_2023_ids_prevalence_systematic_review",
+  "title": "A Systematic Review Suggests Marked Differences in the Prevalence of Infant-Directed Vocalization Across Groups of Populations",
+  "authors": ["Alejandrina Cristia"],
+  "year": 2023,
+  "journal_or_venue": "Developmental Science",
+  "volume": "26",
+  "issue": "1",
+  "pages": "e13265",
+  "doi": "10.1111/desc.13265",
+  "publisher": "Wiley Online Library",
+  "paper_type": "systematic_review",
+  "open_access": true,
+  "source_url": "https://onlinelibrary.wiley.com/doi/epdf/10.1111/desc.13265",
+  "pdf_file": "pdf/cristia_2023_systematic_review_ids_prevalence.pdf"
+},
+{
+  "paper_id": "golinkoff_2015_baby_talk_social_context_ids",
+  "title": "(Baby) Talk to Me: The Social Context of Infant-Directed Speech and Its Effects on Early Language Acquisition",
+  "authors": [
+    "Roberta Michnick Golinkoff",
+    "Dilara Deniz Can",
+    "Melanie Soderstrom",
+    "Kathy Hirsh-Pasek"
+  ],
+  "year": 2015,
+  "journal_or_venue": "Current Directions in Psychological Science",
+  "volume": "24",
+  "issue": "5",
+  "pages": "339–344",
+  "doi": "10.1177/0963721415595345",
+  "publisher": "SAGE Publications",
+  "paper_type": "review",
+  "open_access": true,
+  "source_url": "https://journals.sagepub.com/doi/pdf/10.1177/0963721415595345",
+  "pdf_file": "pdf/golinkoff_2015_baby_talk_social_context_ids.pdf"
+},
+{
+  "paper_id": "kirchhoff_2005_statistical_properties_ids_vs_ads",
+  "title": "Statistical Properties of Infant-Directed Versus Adult-Directed Speech: Insights from Speech Recognition",
+  "authors": [
+    "Katrin Kirchhoff",
+    "Steven Schimmel"
+  ],
+  "year": 2005,
+  "journal_or_venue": "The Journal of the Acoustical Society of America",
+  "volume": "117",
+  "issue": "4",
+  "pages": "2238–2246",
+  "doi": "10.1121/1.1861904",
+  "publisher": "Acoustical Society of America",
+  "paper_type": "empirical_study",
+  "open_access": true,
+  "source_url": "https://pubs.aip.org/asa/jasa/article/117/4/2238/540246/Statistical-properties-of-infant-directed-versus",
+  "pdf_file": "pdf/kirchhoff_2005_statistical_properties_ids_vs_ads.pdf"
+},
+{
+  "paper_id": "englund_2006_changes_ids_first_six_months",
+  "title": "Changes in Infant-Directed Speech in the First Six Months",
+  "authors": [
+    "Kjellrun Englund",
+    "Dawn Behne"
+  ],
+  "year": 2006,
+  "journal_or_venue": "Infant and Child Development",
+  "volume": "15",
+  "issue": "2",
+  "pages": "139–160",
+  "doi": "10.1002/icd.445",
+  "publisher": "Wiley Online Library",
+  "paper_type": "longitudinal_empirical_study",
+  "open_access": true,
+  "source_url": "https://onlinelibrary.wiley.com/doi/pdf/10.1002/icd.445",
+  "pdf_file": "pdf/englund_2006_changes_infant_directed_speech_first_six_months.pdf"
+},
+{
+  "paper_id": "song_2010_acoustic_properties_ids_word_recognition",
+  "title": "Effects of the Acoustic Properties of Infant-Directed Speech on Infant Word Recognition",
+  "authors": [
+    "Jae Yung Song",
+    "Katherine Demuth",
+    "James Morgan"
+  ],
+  "year": 2010,
+  "journal_or_venue": "The Journal of the Acoustical Society of America",
+  "volume": "128",
+  "issue": "1",
+  "pages": "389–400",
+  "doi": "10.1121/1.3458837",
+  "publisher": "Acoustical Society of America",
+  "paper_type": "empirical_experimental_study",
+  "open_access": true,
+  "source_url": "https://pubs.aip.org/asa/jasa/article/128/1/389/655933/Effects-of-the-acoustic-properties-of-infant",
+  "pdf_file": "pdf/song_2010_acoustic_properties_ids_word_recognition.pdf"
+},
+{
+  "paper_id": "manybabies_2020_quantifying_variability_ids_preference",
+  "title": "Quantifying Sources of Variability in Infancy Research Using the Infant-Directed-Speech Preference",
+  "authors": ["ManyBabies Consortium"],
+  "year": 2020,
+  "journal_or_venue": "Advances in Methods and Practices in Psychological Science",
+  "volume": "3",
+  "issue": "1",
+  "pages": "24–52",
+  "doi": "10.1177/2515245919900809",
+  "publisher": "Sage Publications",
+  "paper_type": "empirical_variability_analysis",
+  "open_access": true,
+  "source_url": "https://journals.sagepub.com/doi/pdf/10.1177/2515245919900809",
+  "pdf_file": "pdf/manybabies_2020_quantifying_variability_ids_preference.pdf"
+},
+{
+  "paper_id": "uther_2007_foreigner_vs_infant_directed_speech",
+  "title": "Do you speak E-NG-LI-SH? A Comparison of Foreigner- and Infant-Directed Speech",
+  "authors": [
+    "Maria Uther",
+    "Monja A. Knoll",
+    "Denis Burnham"
+  ],
+  "year": 2007,
+  "journal_or_venue": "Speech Communication",
+  "volume": "49",
+  "issue": "1",
+  "pages": "2–7",
+  "doi": "10.1016/j.specom.2006.08.001",
+  "publisher": "Elsevier",
+  "paper_type": "empirical_comparison",
+  "open_access": true,
+  "source_url": "https://www.sciencedirect.com/science/article/pii/S0167639306001385",
+  "pdf_file": "pdf/uther_2007_foreigner_vs_infant_directed_speech.pdf"
+},
+{
+  "paper_id": "leong_2017_temporal_modulation_structure_ids",
+  "title": "The Temporal Modulation Structure of Infant-Directed Speech",
+  "authors": [
+    "Victoria Leong",
+    "Marina Kalashnikova",
+    "Denis Burnham",
+    "Usha Goswami"
+  ],
+  "year": 2017,
+  "journal_or_venue": "Open Mind",
+  "volume": "1",
+  "issue": "2",
+  "pages": "78–90",
+  "doi": "10.1162/OPMI_a_00010",
+  "publisher": "MIT Press",
+  "paper_type": "empirical_study",
+  "open_access": true,
+  "source_url": "https://direct.mit.edu/opmi/article/1/2/78/2942/The-Temporal-Modulation-Structure-of-Infant",
+  "pdf_file": "pdf/leong_2017_temporal_modulation_structure_ids.pdf"
+},
+{
+  "paper_id": "dunst_2012_preference_ids_preverbal_children",
+  "title": "Preference for Infant-Directed Speech in Preverbal Young Children",
+  "authors": [
+    "Carl Dunst",
+    "Ellen Gorman",
+    "Deborah Hamby"
+  ],
+  "year": 2012,
+  "journal_or_venue": "Center for Early Literacy Learning",
+  "volume": "5",
+  "issue": "1",
+  "pages": "1–13",
+  "publisher": null,
+  "paper_type": "empirical_preference_study",
+  "open_access": true,
+  "source_url": "https://www.researchgate.net/profile/Carl-Dunst/publication/312448261_Preference_for_infant-directed_speech_in_preverbal_young_children/links/65479f5eb1398a779d646b4e/Preference-for-infant-directed-speech-in-preverbal-young-children.pdf",
+  "pdf_file": "pdf/dunst_2012_preference_ids_preverbal_children.pdf"
+},
+{
+  "paper_id": "spinelli_2017_prosody_meta_analysis_ids",
+  "title": "Does Prosody Make the Difference? A Meta-Analysis on Relations Between Prosodic Aspects of Infant-Directed Speech and Infant Outcomes",
+  "authors": [
+    "Maria Spinelli",
+    "Mirco Fasolo",
+    "Judi Mesman"
+  ],
+  "year": 2017,
+  "journal_or_venue": "Developmental Review",
+  "volume": "44",
+  "pages": "1–18",
+  "doi": "10.1016/j.dr.2016.11.002",
+  "publisher": "Elsevier",
+  "paper_type": "meta_analysis",
+  "open_access": true,
+  "source_url": "https://www.sciencedirect.com/science/article/pii/S0273229716300429",
+  "pdf_file": "pdf/spinelli_2017_prosody_meta_analysis_ids.pdf"
+}
+
 ]
