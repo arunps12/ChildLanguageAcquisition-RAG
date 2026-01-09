@@ -1,0 +1,105 @@
+pipeline {
+  agent any
+
+  environment {
+    AWS_REGION = 'us-east-1'                
+    ECR_REPOSITORY = credentials('ECR_REPOSITORY')  
+    AWS_ACCOUNT_ID = credentials('AWS_ACCOUNT_ID')  
+    AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
+
+   
+    APP_HOST = credentials('APP_HOST')      
+  }
+
+  stages {
+
+    stage('Checkout') {
+      steps {
+        checkout scm
+      }
+    }
+
+    stage('Continuous Integration (basic)') {
+      steps {
+        sh '''
+          echo "Repo contents:"
+          ls -la
+          echo "CI placeholder: add unit tests/lint here"
+        '''
+      }
+    }
+
+    stage('Login to ECR') {
+      steps {
+        sh '''
+          aws --version
+          aws ecr get-login-password --region ${AWS_REGION} \
+            | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
+        '''
+      }
+    }
+
+    stage('Build Image') {
+      steps {
+        sh '''
+          # Build and tag the image 
+          IMAGE_URI="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY}"
+          echo "Building ${IMAGE_URI}:${BUILD_NUMBER} and :latest"
+
+          docker build -t ${IMAGE_URI}:${BUILD_NUMBER} -t ${IMAGE_URI}:latest .
+        '''
+      }
+    }
+
+    stage('Push Image') {
+      steps {
+        sh '''
+          # Push both tags to ECR
+          IMAGE_URI="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY}"
+          docker push ${IMAGE_URI}:${BUILD_NUMBER}
+          docker push ${IMAGE_URI}:latest
+        '''
+      }
+    }
+
+    stage('Continuous Deployment (App EC2)') {
+      steps {
+        
+        withCredentials([string(credentialsId: 'OPENAI_API_KEY', variable: 'OPENAI_API_KEY')]) {
+          sshagent(['ssh_key']) {
+            sh '''
+              IMAGE_URI="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY}:latest"
+
+              # Send docker-compose.yml to the app server EC2
+              scp -o StrictHostKeyChecking=no docker-compose.yml ubuntu@${APP_HOST}:/home/ubuntu/docker-compose.yml
+
+              # On the app EC2: login to ECR, set env vars, pull latest image, restart service
+              ssh -o StrictHostKeyChecking=no ubuntu@${APP_HOST} "
+                set -e
+
+                aws ecr get-login-password --region ${AWS_REGION} \
+                  | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
+
+                export IMAGE_NAME=${IMAGE_URI}
+                export OPENAI_API_KEY='${OPENAI_API_KEY}'
+
+                cd /home/ubuntu
+                docker compose pull
+                docker compose up -d
+                docker ps
+              "
+            '''
+          }
+        }
+      }
+    }
+  }
+
+  post {
+    always {
+      
+      sh 'docker system prune -f || true'
+    }
+  }
+}

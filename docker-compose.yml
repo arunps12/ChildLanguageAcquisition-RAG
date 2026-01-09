@@ -1,0 +1,18 @@
+version: "3.8"
+
+services:
+  childlanguagenet:
+    image: "${IMAGE_NAME}"
+    container_name: childlanguagenet
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      OPENAI_API_KEY: "${OPENAI_API_KEY}"
+      STREAMLIT_SERVER_PORT: "8080"
+      STREAMLIT_SERVER_ADDRESS: "0.0.0.0"
+    volumes:
+      - app_data:/app/data
+
+volumes:
+  app_data:
