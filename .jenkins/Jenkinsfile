@@ -2,7 +2,7 @@ pipeline {
   agent any
 
   environment {
-    AWS_REGION = 'us-east-1'               
+    AWS_REGION = credentials('AWS_REGION')              
     ECR_REPOSITORY = credentials('ECR_REPOSITORY')  
     AWS_ACCOUNT_ID = credentials('AWS_ACCOUNT_ID')
     AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
