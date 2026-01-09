@@ -1,0 +1,550 @@
+Started by user Arun Prakash Singh
+Obtained .jenkins/Jenkinsfile from git https://github.com/arunps12/ChildLanguageAcquisition-RAG.git
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on Jenkins in /var/lib/jenkins/workspace/childlanguagenet-rag
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Declarative: Checkout SCM)
+[Pipeline] checkout
+The recommended git tool is: git
+No credentials specified
+ > git rev-parse --resolve-git-dir /var/lib/jenkins/workspace/childlanguagenet-rag/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/arunps12/ChildLanguageAcquisition-RAG.git # timeout=10
+Fetching upstream changes from https://github.com/arunps12/ChildLanguageAcquisition-RAG.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.43.0'
+ > git fetch --tags --force --progress -- https://github.com/arunps12/ChildLanguageAcquisition-RAG.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
+Checking out Revision 4ae9660f5a6fb4f2dcdd64fb85bd1457f6372020 (refs/remotes/origin/main)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 4ae9660f5a6fb4f2dcdd64fb85bd1457f6372020 # timeout=10
+Commit message: "Refactor Dockerfile to ensure virtual environment is correctly set and streamline dependency installation"
+ > git rev-list --no-walk bb429a75a55bec34050dba3057562d7e1ad57aa8 # timeout=10
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] withCredentials
+Masking supported pattern matches of $AWS_REGION or $AWS_ACCESS_KEY_ID or $AWS_SECRET_ACCESS_KEY or $AWS_ACCOUNT_ID or $APP_HOST or $ECR_REPOSITORY
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Checkout)
+[Pipeline] checkout
+The recommended git tool is: git
+No credentials specified
+ > git rev-parse --resolve-git-dir /var/lib/jenkins/workspace/childlanguagenet-rag/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/arunps12/ChildLanguageAcquisition-RAG.git # timeout=10
+Fetching upstream changes from https://github.com/arunps12/ChildLanguageAcquisition-RAG.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.43.0'
+ > git fetch --tags --force --progress -- https://github.com/arunps12/ChildLanguageAcquisition-RAG.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
+Checking out Revision 4ae9660f5a6fb4f2dcdd64fb85bd1457f6372020 (refs/remotes/origin/main)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 4ae9660f5a6fb4f2dcdd64fb85bd1457f6372020 # timeout=10
+Commit message: "Refactor Dockerfile to ensure virtual environment is correctly set and streamline dependency installation"
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Continuous Integration (basic))
+[Pipeline] sh
++ echo Repository contents:
+Repository contents:
++ ls -la
+total 516
+drwxr-xr-x 7 jenkins jenkins   4096 Jan  9 16:08 .
+drwxr-xr-x 4 jenkins jenkins   4096 Jan  9 15:38 ..
+-rw-r--r-- 1 jenkins jenkins    374 Jan  9 15:38 .dockerignore
+drwxr-xr-x 8 jenkins jenkins   4096 Jan  9 16:08 .git
+drwxr-xr-x 3 jenkins jenkins   4096 Jan  9 15:38 .github
+-rw-r--r-- 1 jenkins jenkins   1769 Jan  9 15:38 .gitignore
+drwxr-xr-x 2 jenkins jenkins   4096 Jan  9 15:38 .jenkins
+-rw-r--r-- 1 jenkins jenkins    969 Jan  9 16:08 Dockerfile
+-rw-r--r-- 1 jenkins jenkins   1065 Jan  9 15:38 LICENSE
+-rw-r--r-- 1 jenkins jenkins   3988 Jan  9 15:38 README.md
+drwxr-xr-x 8 jenkins jenkins   4096 Jan  9 15:38 childlanguagenet
+drwxr-xr-x 4 jenkins jenkins   4096 Jan  9 15:38 data
+-rw-r--r-- 1 jenkins jenkins    368 Jan  9 15:38 docker-compose.yml
+-rw-r--r-- 1 jenkins jenkins   4834 Jan  9 15:38 main.py
+-rw-r--r-- 1 jenkins jenkins    623 Jan  9 15:38 pyproject.toml
+-rw-r--r-- 1 jenkins jenkins    161 Jan  9 15:38 requirements.txt
+-rw-r--r-- 1 jenkins jenkins   5775 Jan  9 15:38 streamlit_app.py
+-rw-r--r-- 1 jenkins jenkins 447375 Jan  9 15:38 uv.lock
++ echo CI placeholder
+CI placeholder
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Login to ECR)
+[Pipeline] sh
++ aws --version
+aws-cli/2.32.31 Python/3.13.11 Linux/6.14.0-1015-aws exe/x86_64.ubuntu.24
++ aws ecr get-login-password --region ****
++ docker login --username AWS --password-stdin ****.dkr.ecr.****.amazonaws.com
+
+WARNING! Your credentials are stored unencrypted in '/var/lib/jenkins/.docker/config.json'.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/go/credential-store/
+
+Login Succeeded
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Build Image)
+[Pipeline] sh
++ IMAGE_URI=****.dkr.ecr.****.amazonaws.com/****
++ echo Building image: ****.dkr.ecr.****.amazonaws.com/****:3 and :latest
+Building image: ****.dkr.ecr.****.amazonaws.com/****:3 and :latest
++ docker build -t ****.dkr.ecr.****.amazonaws.com/****:3 -t ****.dkr.ecr.****.amazonaws.com/****:latest .
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.01kB done
+#1 DONE 0.0s
+
+#2 resolve image config for docker-image://docker.io/docker/dockerfile:1
+#2 DONE 0.1s
+
+#3 docker-image://docker.io/docker/dockerfile:1@sha256:b6afd42430b15f2d2a4c5a02b919e98a525b785b1aaff16747d2f623364e39b6
+#3 resolve docker.io/docker/dockerfile:1@sha256:b6afd42430b15f2d2a4c5a02b919e98a525b785b1aaff16747d2f623364e39b6 0.0s done
+#3 CACHED
+
+#4 [internal] load metadata for docker.io/library/python:3.13-slim
+#4 DONE 0.1s
+
+#5 [internal] load .dockerignore
+#5 transferring context: 416B done
+#5 DONE 0.0s
+
+#6 [ 1/11] FROM docker.io/library/python:3.13-slim@sha256:1f3781f578e17958f55ada96c0a827bf279a11e10d6a458ecb8bde667afbb669
+#6 resolve docker.io/library/python:3.13-slim@sha256:1f3781f578e17958f55ada96c0a827bf279a11e10d6a458ecb8bde667afbb669 0.0s done
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 28.25MB 0.2s done
+#7 DONE 0.2s
+
+#8 [ 2/11] WORKDIR /app
+#8 CACHED
+
+#9 [ 3/11] RUN apt-get update && apt-get install -y --no-install-recommends     curl     ca-certificates   && rm -rf /var/lib/apt/lists/*
+#9 CACHED
+
+#10 [ 4/11] RUN curl -LsSf https://astral.sh/uv/install.sh | sh
+#10 CACHED
+
+#11 [ 5/11] COPY pyproject.toml uv.lock ./
+#11 CACHED
+
+#12 [ 6/11] RUN uv venv /opt/venv
+#12 CACHED
+
+#13 [ 7/11] COPY pyproject.toml uv.lock ./
+#13 DONE 0.1s
+
+#14 [ 8/11] RUN uv sync --frozen --no-dev --active
+#14 0.462 Downloading pydeck (6.6MiB)
+#14 0.463 Downloading langchain-community (2.4MiB)
+#14 0.463 Downloading numpy (15.8MiB)
+#14 0.464 Downloading zstandard (5.3MiB)
+#14 0.464 Downloading sqlalchemy (3.1MiB)
+#14 0.465 Downloading pydantic-core (2.0MiB)
+#14 0.465 Downloading pandas (11.7MiB)
+#14 0.466 Downloading pillow (6.7MiB)
+#14 0.466 Downloading tiktoken (1.1MiB)
+#14 0.466 Downloading pyarrow (45.5MiB)
+#14 0.470 Downloading pygments (1.2MiB)
+#14 0.471 Downloading jedi (1.5MiB)
+#14 0.474 Downloading openai (1.0MiB)
+#14 0.474 Downloading debugpy (4.1MiB)
+#14 0.475 Downloading streamlit (8.6MiB)
+#14 0.476 Downloading aiohttp (1.7MiB)
+#14 0.477 Downloading faiss-cpu (22.6MiB)
+#14 0.999    Building wikipedia==1.4.0
+#14 1.035  Downloaded tiktoken
+#14 1.193  Downloaded aiohttp
+#14 1.216  Downloaded pygments
+#14 1.270  Downloaded pydantic-core
+#14 1.588  Downloaded sqlalchemy
+#14 1.714  Downloaded zstandard
+#14 1.767  Downloaded debugpy
+#14 1.848  Downloaded pydeck
+#14 1.898  Downloaded pillow
+#14 2.010  Downloaded streamlit
+#14 2.101  Downloaded openai
+#14 2.304  Downloaded langchain-community
+#14 2.945  Downloaded faiss-cpu
+#14 3.013  Downloaded numpy
+#14 3.187  Downloaded jedi
+#14 3.226  Downloaded pyarrow
+#14 3.231  Downloaded pandas
+#14 3.652       Built wikipedia==1.4.0
+#14 3.656 Prepared 118 packages in 3.25s
+#14 3.786 Installed 118 packages in 129ms
+#14 3.786  + aiohappyeyeballs==2.6.1
+#14 3.786  + aiohttp==3.13.2
+#14 3.786  + aiosignal==1.4.0
+#14 3.786  + altair==6.0.0
+#14 3.786  + annotated-types==0.7.0
+#14 3.786  + anyio==4.12.0
+#14 3.786  + asttokens==3.0.1
+#14 3.786  + attrs==25.4.0
+#14 3.786  + beautifulsoup4==4.14.3
+#14 3.786  + blinker==1.9.0
+#14 3.786  + cachetools==6.2.4
+#14 3.786  + certifi==2025.11.12
+#14 3.786  + charset-normalizer==3.4.4
+#14 3.786  + click==8.3.1
+#14 3.787  + comm==0.2.3
+#14 3.787  + dataclasses-json==0.6.7
+#14 3.787  + debugpy==1.8.19
+#14 3.787  + decorator==5.2.1
+#14 3.787  + distro==1.9.0
+#14 3.787  + executing==2.2.1
+#14 3.787  + faiss-cpu==1.13.1
+#14 3.787  + frozenlist==1.8.0
+#14 3.787  + gitdb==4.0.12
+#14 3.787  + gitpython==3.1.45
+#14 3.787  + greenlet==3.3.0
+#14 3.787  + h11==0.16.0
+#14 3.788  + httpcore==1.0.9
+#14 3.788  + httpx==0.28.1
+#14 3.788  + httpx-sse==0.4.3
+#14 3.788  + idna==3.11
+#14 3.788  + ipykernel==7.1.0
+#14 3.788  + ipython==9.8.0
+#14 3.788  + ipython-pygments-lexers==1.1.1
+#14 3.788  + jedi==0.19.2
+#14 3.788  + jinja2==3.1.6
+#14 3.788  + jiter==0.12.0
+#14 3.788  + jsonpatch==1.33
+#14 3.788  + jsonpointer==3.0.0
+#14 3.788  + jsonschema==4.25.1
+#14 3.788  + jsonschema-specifications==2025.9.1
+#14 3.788  + jupyter-client==8.7.0
+#14 3.788  + jupyter-core==5.9.1
+#14 3.788  + langchain==1.2.0
+#14 3.788  + langchain-classic==1.0.0
+#14 3.788  + langchain-community==0.4.1
+#14 3.788  + langchain-core==1.2.2
+#14 3.788  + langchain-openai==1.1.4
+#14 3.789  + langchain-text-splitters==1.1.0
+#14 3.789  + langgraph==1.0.5
+#14 3.789  + langgraph-checkpoint==3.0.1
+#14 3.789  + langgraph-prebuilt==1.0.5
+#14 3.789  + langgraph-sdk==0.3.0
+#14 3.789  + langsmith==0.5.0
+#14 3.789  + markupsafe==3.0.3
+#14 3.789  + marshmallow==3.26.1
+#14 3.789  + matplotlib-inline==0.2.1
+#14 3.789  + multidict==6.7.0
+#14 3.789  + mypy-extensions==1.1.0
+#14 3.789  + narwhals==2.14.0
+#14 3.789  + nest-asyncio==1.6.0
+#14 3.789  + numpy==2.3.5
+#14 3.789  + openai==2.13.0
+#14 3.789  + orjson==3.11.5
+#14 3.789  + ormsgpack==1.12.1
+#14 3.790  + packaging==25.0
+#14 3.790  + pandas==2.3.3
+#14 3.790  + parso==0.8.5
+#14 3.790  + pexpect==4.9.0
+#14 3.790  + pillow==12.0.0
+#14 3.790  + platformdirs==4.5.1
+#14 3.790  + prompt-toolkit==3.0.52
+#14 3.790  + propcache==0.4.1
+#14 3.790  + protobuf==6.33.2
+#14 3.790  + psutil==7.1.3
+#14 3.790  + ptyprocess==0.7.0
+#14 3.790  + pure-eval==0.2.3
+#14 3.790  + pyarrow==22.0.0
+#14 3.790  + pydantic==2.12.5
+#14 3.790  + pydantic-core==2.41.5
+#14 3.790  + pydantic-settings==2.12.0
+#14 3.791  + pydeck==0.9.1
+#14 3.791  + pygments==2.19.2
+#14 3.791  + pypdf==6.4.2
+#14 3.791  + python-dateutil==2.9.0.post0
+#14 3.791  + python-dotenv==1.2.1
+#14 3.791  + pytz==2025.2
+#14 3.791  + pyyaml==6.0.3
+#14 3.791  + pyzmq==27.1.0
+#14 3.791  + referencing==0.37.0
+#14 3.791  + regex==2025.11.3
+#14 3.791  + requests==2.32.5
+#14 3.791  + requests-toolbelt==1.0.0
+#14 3.791  + rpds-py==0.30.0
+#14 3.791  + six==1.17.0
+#14 3.791  + smmap==5.0.2
+#14 3.791  + sniffio==1.3.1
+#14 3.791  + soupsieve==2.8
+#14 3.791  + sqlalchemy==2.0.45
+#14 3.792  + stack-data==0.6.3
+#14 3.792  + streamlit==1.52.1
+#14 3.792  + tenacity==9.1.2
+#14 3.792  + tiktoken==0.12.0
+#14 3.792  + toml==0.10.2
+#14 3.792  + tornado==6.5.4
+#14 3.792  + tqdm==4.67.1
+#14 3.792  + traitlets==5.14.3
+#14 3.792  + typing-extensions==4.15.0
+#14 3.792  + typing-inspect==0.9.0
+#14 3.792  + typing-inspection==0.4.2
+#14 3.792  + tzdata==2025.3
+#14 3.792  + urllib3==2.6.2
+#14 3.792  + uuid-utils==0.12.0
+#14 3.792  + watchdog==6.0.0
+#14 3.792  + wcwidth==0.2.14
+#14 3.792  + wikipedia==1.4.0
+#14 3.793  + xxhash==3.6.0
+#14 3.793  + yarl==1.22.0
+#14 3.793  + zstandard==0.25.0
+#14 DONE 5.6s
+
+#15 [ 9/11] COPY childlanguagenet ./childlanguagenet
+#15 DONE 0.2s
+
+#16 [10/11] COPY data ./data
+#16 DONE 0.1s
+
+#17 [11/11] COPY streamlit_app.py main.py ./
+#17 DONE 0.0s
+
+#18 exporting to image
+#18 exporting layers
+#18 exporting layers 17.7s done
+#18 exporting manifest sha256:bc4e4bf5a4ff5a84da087645882be7dc769e7e2678158e8cdd603e605ab29bb3 done
+#18 exporting config sha256:a4f4e3025551079364e78aead524dc0afb6c3ae9b84cff438449929df42b2eb1 done
+#18 exporting attestation manifest sha256:edcf7f5ec8db89963c15191473175bed668e5a3e77e73a382309f3280520ebce 0.0s done
+#18 exporting manifest list sha256:8a9e292d84854382e98b42d3adec4e82d3db4fb7db02a5b3b3a339f08a67e506 0.0s done
+#18 naming to ****.dkr.ecr.****.amazonaws.com/****:3 done
+#18 unpacking to ****.dkr.ecr.****.amazonaws.com/****:3
+#18 unpacking to ****.dkr.ecr.****.amazonaws.com/****:3 4.4s done
+#18 naming to ****.dkr.ecr.****.amazonaws.com/****:latest done
+#18 unpacking to ****.dkr.ecr.****.amazonaws.com/****:latest 0.0s done
+#18 DONE 22.1s
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Push Image)
+[Pipeline] sh
++ IMAGE_URI=****.dkr.ecr.****.amazonaws.com/****
++ docker push ****.dkr.ecr.****.amazonaws.com/****:3
+The push refers to repository [****.dkr.ecr.****.amazonaws.com/****]
+02d7611c4eae: Layer already exists
+7bfd52909069: Layer already exists
+f1a1869fe2bf: Layer already exists
+ea5db29837a8: Waiting
+333410d18941: Waiting
+6818054bc0c1: Layer already exists
+73777ef5a261: Layer already exists
+66bbad112d98: Waiting
+a009dd2150d6: Waiting
+d90cf1140d12: Layer already exists
+f27a2ffa5dac: Waiting
+8a0cc9fd0b20: Layer already exists
+5527b5a51039: Layer already exists
+4f4fb700ef54: Waiting
+8a8f769f7633: Layer already exists
+66bbad112d98: Pushed
+a009dd2150d6: Pushed
+4f4fb700ef54: Pushed
+333410d18941: Pushed
+f27a2ffa5dac: Pushed
+ea5db29837a8: Pushed
+3: digest: sha256:8a9e292d84854382e98b42d3adec4e82d3db4fb7db02a5b3b3a339f08a67e506 size: 856
++ docker push ****.dkr.ecr.****.amazonaws.com/****:latest
+The push refers to repository [****.dkr.ecr.****.amazonaws.com/****]
+5527b5a51039: Layer already exists
+a009dd2150d6: Layer already exists
+02d7611c4eae: Layer already exists
+d90cf1140d12: Layer already exists
+4f4fb700ef54: Layer already exists
+8a8f769f7633: Layer already exists
+66bbad112d98: Already exists
+333410d18941: Layer already exists
+f27a2ffa5dac: Layer already exists
+73777ef5a261: Layer already exists
+7bfd52909069: Layer already exists
+ea5db29837a8: Layer already exists
+f1a1869fe2bf: Layer already exists
+6818054bc0c1: Layer already exists
+8a0cc9fd0b20: Layer already exists
+latest: digest: sha256:8a9e292d84854382e98b42d3adec4e82d3db4fb7db02a5b3b3a339f08a67e506 size: 856
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Continuous Deployment (App EC2))
+[Pipeline] withCredentials
+Masking supported pattern matches of $OPENAI_API_KEY
+[Pipeline] {
+[Pipeline] sshagent
+[ssh-agent] Using credentials jenkins
+$ ssh-agent
+SSH_AUTH_SOCK=/tmp/ssh-sxH922kvkjzZ/agent.4954
+SSH_AGENT_PID=4957
+Running ssh-add (command line suppressed)
+Identity added: /var/lib/jenkins/workspace/childlanguagenet-rag@tmp/private_key_11038842693286965951.key (/var/lib/jenkins/workspace/childlanguagenet-rag@tmp/private_key_11038842693286965951.key)
+[ssh-agent] Started.
+[Pipeline] {
+[Pipeline] sh
++ IMAGE_URI=****.dkr.ecr.****.amazonaws.com/****:latest
++ ssh -o StrictHostKeyChecking=no ubuntu@**** 
+                set -e
+
+                # Fetch the latest docker-compose.yml directly from GitHub
+                curl -fsSL                   https://raw.githubusercontent.com/arunps12/ChildLanguageAcquisition-RAG/main/docker-compose.yml                   -o /home/ubuntu/docker-compose.yml
+
+                # Login to ECR
+                aws ecr get-login-password --region ****                   | docker login --username AWS --password-stdin ****.dkr.ecr.****.amazonaws.com
+
+                # Export runtime variables for docker-compose
+                export IMAGE_NAME=****.dkr.ecr.****.amazonaws.com/****:latest
+                export OPENAI_API_KEY=****
+
+                cd /home/ubuntu
+                docker compose pull
+                docker compose up -d
+                docker ps
+              
+Login Succeeded
+
+WARNING! Your credentials are stored unencrypted in '/home/ubuntu/.docker/config.json'.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/go/credential-store/
+
+time="2026-01-09T16:09:30Z" level=warning msg="/home/ubuntu/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+ Image ****.dkr.ecr.****.amazonaws.com/****:latest Pulling 
+ a009dd2150d6 Pulling fs layer 
+ 4f4fb700ef54 Pulling fs layer 
+ ea5db29837a8 Pulling fs layer 
+ 333410d18941 Pulling fs layer 
+ f27a2ffa5dac Pulling fs layer 
+ 4f4fb700ef54 Download complete 
+ 4f4fb700ef54 Pull complete 
+ 333410d18941 Download complete 
+ f27a2ffa5dac Downloading [===========>                                       ]  4.194MB/18.9MB
+ a009dd2150d6 Download complete 
+ f27a2ffa5dac Downloading [=========================================>         ]  15.73MB/18.9MB
+ 66bbad112d98 Download complete 
+ ea5db29837a8 Downloading [====>                                              ]  13.63MB/162.7MB
+ ea5db29837a8 Downloading [=====>                                             ]  16.78MB/162.7MB
+ f27a2ffa5dac Download complete 
+ ea5db29837a8 Downloading [===========>                                       ]   37.7MB/162.7MB
+ ea5db29837a8 Downloading [============>                                      ]  40.89MB/162.7MB
+ ea5db29837a8 Downloading [==================>                                ]  58.72MB/162.7MB
+ ea5db29837a8 Downloading [====================>                              ]  67.11MB/162.7MB
+ ea5db29837a8 Downloading [========================>                          ]  78.64MB/162.7MB
+ ea5db29837a8 Downloading [=========================>                         ]  82.84MB/162.7MB
+ ea5db29837a8 Downloading [==============================>                    ]  98.57MB/162.7MB
+ ea5db29837a8 Downloading [===============================>                   ]  103.8MB/162.7MB
+ ea5db29837a8 Downloading [================================>                  ]  104.9MB/162.7MB
+ ea5db29837a8 Downloading [=====================================>             ]  120.6MB/162.7MB
+ ea5db29837a8 Downloading [======================================>            ]  124.8MB/162.7MB
+ ea5db29837a8 Downloading [============================================>      ]  143.7MB/162.7MB
+ ea5db29837a8 Downloading [===============================================>   ]  153.1MB/162.7MB
+ ea5db29837a8 Downloading [==================================================>]  162.7MB/162.7MB
+ ea5db29837a8 Downloading [==================================================>]  162.7MB/162.7MB
+ ea5db29837a8 Download complete 
+ ea5db29837a8 Extracting 1 s
+ ea5db29837a8 Extracting 1 s
+ ea5db29837a8 Extracting 1 s
+ ea5db29837a8 Extracting 1 s
+ ea5db29837a8 Extracting 1 s
+ ea5db29837a8 Extracting 1 s
+ ea5db29837a8 Extracting 1 s
+ ea5db29837a8 Extracting 1 s
+ ea5db29837a8 Extracting 1 s
+ ea5db29837a8 Extracting 1 s
+ ea5db29837a8 Extracting 1 s
+ ea5db29837a8 Extracting 2 s
+ ea5db29837a8 Extracting 2 s
+ ea5db29837a8 Extracting 2 s
+ ea5db29837a8 Extracting 2 s
+ ea5db29837a8 Extracting 2 s
+ ea5db29837a8 Extracting 2 s
+ ea5db29837a8 Extracting 2 s
+ ea5db29837a8 Extracting 2 s
+ ea5db29837a8 Extracting 2 s
+ ea5db29837a8 Extracting 2 s
+ ea5db29837a8 Extracting 3 s
+ ea5db29837a8 Extracting 3 s
+ ea5db29837a8 Extracting 3 s
+ ea5db29837a8 Extracting 3 s
+ ea5db29837a8 Extracting 3 s
+ ea5db29837a8 Extracting 3 s
+ ea5db29837a8 Extracting 3 s
+ ea5db29837a8 Extracting 3 s
+ ea5db29837a8 Extracting 3 s
+ ea5db29837a8 Extracting 3 s
+ ea5db29837a8 Extracting 4 s
+ ea5db29837a8 Extracting 4 s
+ ea5db29837a8 Extracting 4 s
+ ea5db29837a8 Extracting 4 s
+ ea5db29837a8 Extracting 4 s
+ ea5db29837a8 Extracting 4 s
+ ea5db29837a8 Extracting 4 s
+ ea5db29837a8 Extracting 4 s
+ ea5db29837a8 Extracting 4 s
+ ea5db29837a8 Extracting 5 s
+ ea5db29837a8 Extracting 5 s
+ ea5db29837a8 Extracting 5 s
+ ea5db29837a8 Extracting 5 s
+ ea5db29837a8 Extracting 5 s
+ ea5db29837a8 Extracting 5 s
+ ea5db29837a8 Extracting 5 s
+ ea5db29837a8 Extracting 5 s
+ ea5db29837a8 Extracting 5 s
+ 333410d18941 Pull complete 
+ ea5db29837a8 Pull complete 
+ f27a2ffa5dac Extracting 1 s
+ a009dd2150d6 Pull complete 
+ f27a2ffa5dac Pull complete 
+ Image ****.dkr.ecr.****.amazonaws.com/****:latest Pulled 
+time="2026-01-09T16:09:37Z" level=warning msg="/home/ubuntu/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+time="2026-01-09T16:09:37Z" level=warning msg="No services to build"
+ Container childlanguagenet Recreate 
+ Container childlanguagenet Recreated 
+ Container childlanguagenet Starting 
+ Container childlanguagenet Started 
+CONTAINER ID   IMAGE                                                                              COMMAND                  CREATED         STATUS                  PORTS                                         NAMES
+5c424f53f9a6   ****.dkr.ecr.****.amazonaws.com/****:latest   "/opt/venv/bin/strea…"   5 seconds ago   Up Less than a second   0.0.0.0:8080->8080/tcp, [::]:8080->8080/tcp   childlanguagenet
+[Pipeline] }
+$ ssh-agent -k
+unset SSH_AUTH_SOCK;
+unset SSH_AGENT_PID;
+echo Agent pid 4957 killed;
+[ssh-agent] Stopped.
+[Pipeline] // sshagent
+[Pipeline] }
+[Pipeline] // withCredentials
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Declarative: Post Actions)
+[Pipeline] sh
++ docker system prune -f
+Deleted build cache objects:
+ytcxqif6fk17tew3yi3grhdah
+juqncoqruwdkw98zb3nhoqlxj
+4l1wdqfkkr9cf6mxlq2jj9on0
+ui69nq6tg0tm1d06j3db4chs4
+u1wpsu7ko2yjavmwloxhwfa4p
+6cotxy9b8wc6dqm5d8fdohw9p
+bb513u3l90iogua6re1fhmlp9
+pdtipgsa38ikao5w1qlnmanv1
+
+Total reclaimed space: 862.1MB
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // withCredentials
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+Finished: SUCCESS
