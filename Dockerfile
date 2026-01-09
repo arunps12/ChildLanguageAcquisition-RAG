@@ -21,10 +21,14 @@ ENV PATH="/root/.local/bin:${PATH}"
 # Copy lock + project metadata first for caching
 COPY pyproject.toml uv.lock ./
 
-# Create venv + install deps from lock 
+# Create venv and install deps
 RUN uv venv /opt/venv
+ENV VIRTUAL_ENV=/opt/venv
 ENV PATH="/opt/venv/bin:${PATH}"
-RUN uv sync --frozen --no-dev
+
+COPY pyproject.toml uv.lock ./
+
+RUN uv sync --frozen --no-dev --active
 
 # Copy application code and data
 COPY childlanguagenet ./childlanguagenet
@@ -33,4 +37,5 @@ COPY streamlit_app.py main.py ./
 
 EXPOSE 8080
 
-CMD ["streamlit", "run", "streamlit_app.py", "--server.port=8080", "--server.address=0.0.0.0"]
+CMD ["/opt/venv/bin/streamlit", "run", "streamlit_app.py", "--server.port=8080", "--server.address=0.0.0.0"]
+
