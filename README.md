@@ -25,29 +25,62 @@ The system enables researchers to query a curated corpus of academic papers (PDF
 
 ```
 ChildLanguageAcquisition-RAG/
-├── app.py                      # Streamlit application
-├── main.py                     # CLI entry point
-├── childlanguagenet/
+├── childlanguagenet/                 # Core RAG library (Python package)
+│   ├── __init__.py                   # Package marker / public API
+│   │
 │   ├── config/
-│   │   └── config.py
+│   │   ├── __init__.py
+│   │   └── config.py                 # Central configuration
+│   │
 │   ├── document_ingestion/
-│   │   └── document_processor.py
+│   │   ├── __init__.py
+│   │   └── document_processor.py     # PDF / URL ingestion & metadata parsing
+│   │
 │   ├── vectorstore/
-│   │   └── vectorstore.py
+│   │   ├── __init__.py
+│   │   └── vectorstore.py            # FAISS vector store logic
+│   │
 │   ├── graph_builder/
-│   │   └── graph_builder.py
+│   │   ├── __init__.py
+│   │   └── graph_builder.py          # LangGraph agentic pipeline
+│   │
 │   ├── node/
-│   │   └── react_node.py
+│   │   ├── __init__.py
+│   │   ├── react_node.py             # ReAct-style agent reasoning node
+│   │   └── rag_node.py               # Retrieval–Augmented Generation node
+│   │
 │   └── state/
-│       └── rag_state.py
+│       ├── __init__.py
+│       └── rag_state.py              # Shared RAG state definition
+│
+├── streamlit_app.py                  # Streamlit UI entry point
+├── main.py                           # CLI / programmatic entry point
+│
 ├── data/
-│   ├── metadata.json            # Paper registry
-│   ├── pdf/                     # Local PDFs
-│   └── index/faiss/             # FAISS index
-├── pyproject.toml
-├── uv.lock                      # Locked, reproducible dependencies
-├── .env
-└── README.md
+│   ├── metadata.json                 # Central paper registry
+│   ├── pdf/                          # Local PDF corpus
+│   └── index/
+│       └── faiss/                    # Persisted FAISS indices
+│
+├── ci-cd-logs/                       # Jenkins / CI build logs (artifacts)
+│
+├── .github/                          # GitHub Actions CI workflows
+│   └── workflows/
+│       └── main.yml                  # CI pipeline (lint, test, build)
+│
+├── .jenkins/                         # Jenkins pipeline definitions
+│   └── Jenkinsfile                  # Jenkins CI/CD pipeline
+│
+├── Dockerfile                        # Production Docker image
+├── docker-compose.yml                # Local multi-service orchestration
+│
+├── pyproject.toml                    # Project metadata (uv-managed)
+├── uv.lock                           # Fully locked, reproducible dependencies
+├── requirements.txt                  # Runtime-only dependencies (deployment)
+│
+├── .env                              # Environment variables (NOT committed)
+├── LICENSE                           # Open-source license
+└── README.md                         # Project documentation
 ```
 
 ---
