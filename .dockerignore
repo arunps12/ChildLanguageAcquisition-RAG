@@ -1,0 +1,38 @@
+# VCS
+.git
+.gitignore
+.env
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+build/
+dist/
+
+# Virtual envs
+.venv/
+venv/
+
+# Notebooks / cache
+.ipynb_checkpoints/
+.cache/
+.pytest_cache/
+.mypy_cache/
+ruff_cache/
+
+# Streamlit
+.streamlit/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Large / local artifacts (optional: uncomment if you have them)
+# artifacts/
+# faiss_index/

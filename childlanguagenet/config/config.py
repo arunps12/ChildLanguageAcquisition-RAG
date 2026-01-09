@@ -49,7 +49,7 @@ class Config:
     # -----------------------
     # Embeddings
     # -----------------------
-    #EMBEDDING_MODEL = "text-embedding-3-small"
+    EMBEDDING_MODEL = "text-embedding-3-small"
 
     # -----------------------
     # Document processing
@@ -78,5 +78,6 @@ class Config:
     @classmethod
     def get_embeddings(cls):
         """Initialize and return the embedding model."""
-        os.environ["OPENAI_API_KEY"] = cls.OPENAI_API_KEY
+        if not cls.OPENAI_API_KEY:
+            raise EnvironmentError("OPENAI_API_KEY not set")
         return OpenAIEmbeddings(model=cls.EMBEDDING_MODEL)
