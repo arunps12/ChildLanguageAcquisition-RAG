@@ -1,0 +1,24 @@
+stages:
+  build_faiss_index:
+    cmd: >
+      python -c "from main import main; main(rebuild_index=True)"
+    deps:
+      # Entry point
+      - main.py
+
+      # Core library files
+      - childlanguagenet/config/config.py
+      - childlanguagenet/document_ingestion/document_processor.py
+      - childlanguagenet/vectorstore/vectorstore.py
+      - childlanguagenet/graph_builder/graph_builder.py
+      - childlanguagenet/node/react_node.py
+      - childlanguagenet/node/rag_nodes.py
+      - childlanguagenet/state/rag_state.py
+
+      # Registry + corpus
+      - data/metadata.json
+      - data/pdf
+
+    outs:
+      # Persisted FAISS index directory
+      - data/index/faiss

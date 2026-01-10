@@ -1,0 +1,52 @@
+schema: '2.0'
+stages:
+  build_faiss_index:
+    cmd: "python -c \"from main import main; main(rebuild_index=True)\"\n"
+    deps:
+    - path: childlanguagenet/config/config.py
+      hash: md5
+      md5: 19ed2f6c2e246599af9b1ce4d7f93fd7
+      size: 2181
+    - path: childlanguagenet/document_ingestion/document_processor.py
+      hash: md5
+      md5: 6910b657b815af6fad468c113be08dcf
+      size: 7066
+    - path: childlanguagenet/graph_builder/graph_builder.py
+      hash: md5
+      md5: ca93045cf5f7cfe429e9949c8b651e0d
+      size: 1601
+    - path: childlanguagenet/node/rag_nodes.py
+      hash: md5
+      md5: e62efcf5bcdab2c52b0de76c4e3fd4db
+      size: 3751
+    - path: childlanguagenet/node/react_node.py
+      hash: md5
+      md5: 297fd95d4358281729d4f0cfa503a299
+      size: 5262
+    - path: childlanguagenet/state/rag_state.py
+      hash: md5
+      md5: cb175da98b7b474c8f35ccced2b2d36f
+      size: 1257
+    - path: childlanguagenet/vectorstore/vectorstore.py
+      hash: md5
+      md5: cc75a1389d45d4d9972a47fd72c48df4
+      size: 3926
+    - path: data/metadata.json
+      hash: md5
+      md5: 57d1d5c4a8d3b367fb1d6c0428e8e949
+      size: 13954
+    - path: data/pdf
+      hash: md5
+      md5: 430dcb0afa4bb7e268d1fe0386e42da3.dir
+      size: 24734296
+      nfiles: 20
+    - path: main.py
+      hash: md5
+      md5: f3ce0b91dd4a4a5ebd3319d84180ef4b
+      size: 4834
+    outs:
+    - path: data/index/faiss
+      hash: md5
+      md5: dada1e8f6859246bd58152f9fbcc704c.dir
+      size: 25537244
+      nfiles: 2
