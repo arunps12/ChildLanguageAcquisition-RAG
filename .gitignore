@@ -173,3 +173,8 @@ logs/
 # Temporary files
 temp/
 tmp/
+
+# DVC files
+.dvc/
+data/pdf/
+data/index/faiss/
