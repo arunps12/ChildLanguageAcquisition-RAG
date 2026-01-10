@@ -12,3 +12,4 @@ requests
 streamlit
 wikipedia
 pypdf
+dvc
