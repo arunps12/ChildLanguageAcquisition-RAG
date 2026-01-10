@@ -1,7 +1,5 @@
 # ChildLanguageAcquisition-RAG
 
-# ChildLanguageAcquisition-RAG
-
 A **metadata-first, agentic Retrieval-Augmented Generation (RAG)** system for **child language acquisition research**, built with **LangChain, LangGraph, FAISS, OpenAI, and Streamlit**.
 
 The system enables researchers to query a curated corpus of academic papers (PDFs and web-based sources) and obtain **grounded, citation-aware answers** through an agentic retrieval and generation workflow.
@@ -11,6 +9,7 @@ All data processing steps including document ingestion, chunking, vector index c
 The project also includes a **production-oriented CI/CD pipeline** using **Jenkins and Docker**, enabling automated builds, containerization, and deployment of the Streamlit application to **AWS EC2 via Amazon ECR**, bridging research workflows and real-world deployment.
 
 The diagram below illustrates the end-to-end CI/CD workflow of **ChildLanguageAcquisition-RAG**.
+![CI/CD Pipeline for ChildLanguageAcquisition-RAG](docs/image/ci_cd_pipeline.png)
 ---
 
 ## Key Features
