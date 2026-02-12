@@ -16,17 +16,16 @@ from pathlib import Path
 
 from childlanguagenet.config.settings import get_settings
 
-
 # ── helpers ────────────────────────────────────────────────────────────────
 
 def _build_index(settings=None):
     """Build FAISS index from metadata registry."""
-    from childlanguagenet.ingestion.metadata_registry import validate_metadata
-    from childlanguagenet.ingestion.loaders import load_all_papers
-    from childlanguagenet.ingestion.chunking import chunk_documents
     from childlanguagenet.embeddings.embedder import get_embeddings
-    from childlanguagenet.vectorstore.faiss_store import FAISSStore
+    from childlanguagenet.ingestion.chunking import chunk_documents
+    from childlanguagenet.ingestion.loaders import load_all_papers
+    from childlanguagenet.ingestion.metadata_registry import validate_metadata
     from childlanguagenet.telemetry.logging import get_logger
+    from childlanguagenet.vectorstore.faiss_store import FAISSStore
 
     settings = settings or get_settings()
     logger = get_logger(__name__)
@@ -114,9 +113,9 @@ def _validate_metadata_cmd(args):
 
 def _ingest_cmd(args):
     """CLI handler for ingest sub-command."""
-    from childlanguagenet.ingestion.metadata_registry import validate_metadata
-    from childlanguagenet.ingestion.loaders import load_all_papers
     from childlanguagenet.ingestion.chunking import chunk_documents
+    from childlanguagenet.ingestion.loaders import load_all_papers
+    from childlanguagenet.ingestion.metadata_registry import validate_metadata
     from childlanguagenet.telemetry.logging import get_logger
 
     settings = get_settings()
@@ -154,12 +153,12 @@ def _ingest_cmd(args):
 
 def _build_index_cmd(args):
     """CLI handler for build-index sub-command."""
-    from childlanguagenet.ingestion.metadata_registry import validate_metadata
-    from childlanguagenet.ingestion.loaders import load_all_papers
-    from childlanguagenet.ingestion.chunking import chunk_documents
     from childlanguagenet.embeddings.embedder import get_embeddings
-    from childlanguagenet.vectorstore.faiss_store import FAISSStore
+    from childlanguagenet.ingestion.chunking import chunk_documents
+    from childlanguagenet.ingestion.loaders import load_all_papers
+    from childlanguagenet.ingestion.metadata_registry import validate_metadata
     from childlanguagenet.telemetry.logging import get_logger
+    from childlanguagenet.vectorstore.faiss_store import FAISSStore
 
     settings = get_settings()
     logger = get_logger(__name__)

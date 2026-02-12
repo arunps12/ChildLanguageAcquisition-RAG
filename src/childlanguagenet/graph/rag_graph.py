@@ -2,17 +2,16 @@
 
 from __future__ import annotations
 
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 from langchain_core.documents import Document
-from langchain_core.tools import Tool
 from langchain_core.messages import HumanMessage
-from langgraph.graph import StateGraph, END
+from langchain_core.tools import Tool
+from langgraph.graph import END, StateGraph
 from langgraph.prebuilt import create_react_agent
 from pydantic import BaseModel, Field
 
 from childlanguagenet.citations.cite import Citation, format_sources_section
-
 
 # ── State ──────────────────────────────────────────────────────────────────
 

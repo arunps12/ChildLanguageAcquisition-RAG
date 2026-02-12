@@ -5,8 +5,8 @@ from __future__ import annotations
 from pathlib import Path
 from typing import List, Optional, Union
 
-from langchain_core.documents import Document
 from langchain_community.vectorstores import FAISS
+from langchain_core.documents import Document
 
 
 class FAISSStore:

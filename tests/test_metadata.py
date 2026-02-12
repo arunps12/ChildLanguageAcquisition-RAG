@@ -1,8 +1,6 @@
 """Smoke tests for metadata validation."""
 
 import json
-import tempfile
-from pathlib import Path
 
 import pytest
 

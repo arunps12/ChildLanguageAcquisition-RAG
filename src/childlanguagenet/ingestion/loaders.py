@@ -4,10 +4,10 @@ from __future__ import annotations
 
 import re
 from pathlib import Path
-from typing import List, Optional, Union
+from typing import List, Union
 
-from langchain_core.documents import Document
 from langchain_community.document_loaders import PyPDFLoader, WebBaseLoader
+from langchain_core.documents import Document
 
 from childlanguagenet.ingestion.metadata_registry import PaperRecord
 

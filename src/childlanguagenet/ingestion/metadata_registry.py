@@ -6,7 +6,7 @@ Validates structure, detects duplicate IDs, verifies PDF existence, checks URL s
 from __future__ import annotations
 
 import json
-from dataclasses import dataclass, field as dc_field
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
@@ -113,7 +113,8 @@ def validate_metadata(
             path_or_url = source_url
             if not (source_url.startswith("http://") or source_url.startswith("https://")):
                 errors.append(
-                    f"Entry {idx} ({pid}): URL must start with http:// or https://, got: {source_url}"
+                    f"Entry {idx} ({pid}): URL must start with http(s)://, "
+                    f"got: {source_url}"
                 )
         else:
             source_type = "pdf"
