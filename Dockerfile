@@ -4,7 +4,7 @@ FROM python:3.13-slim
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PIP_NO_CACHE_DIR=1 \
-    STREAMLIT_SERVER_PORT=8080 \
+    STREAMLIT_SERVER_PORT=8501 \
     STREAMLIT_SERVER_ADDRESS=0.0.0.0
 
 WORKDIR /app
@@ -26,16 +26,14 @@ RUN uv venv /opt/venv
 ENV VIRTUAL_ENV=/opt/venv
 ENV PATH="/opt/venv/bin:${PATH}"
 
-COPY pyproject.toml uv.lock ./
-
 RUN uv sync --frozen --no-dev --active
 
-# Copy application code and data
-COPY childlanguagenet ./childlanguagenet
-COPY data ./data
-COPY streamlit_app.py main.py ./
+# Copy application code
+COPY src/ ./src/
+COPY apps/ ./apps/
+COPY data/ ./data/
 
-EXPOSE 8080
+EXPOSE 8501
 
-CMD ["/opt/venv/bin/streamlit", "run", "streamlit_app.py", "--server.port=8080", "--server.address=0.0.0.0"]
+CMD ["/opt/venv/bin/streamlit", "run", "apps/streamlit_app.py", "--server.port=8501", "--server.address=0.0.0.0"]
 
