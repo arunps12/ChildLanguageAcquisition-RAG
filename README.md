@@ -27,31 +27,31 @@ The project also includes a **production-oriented CI/CD pipeline** (GitHub Actio
 
 ```mermaid
 flowchart LR
-    subgraph Ingestion["📥 Ingestion Pipeline"]
-        A["metadata.json\n(Paper Registry)"] --> B["PDF / URL\nLoaders"]
-        B --> C["Deterministic\nChunker"]
+    subgraph Ingestion["Ingestion Pipeline"]
+        A["metadata.json"] --> B["PDF / URL Loaders"]
+        B --> C["Deterministic Chunker"]
     end
 
-    subgraph Indexing["🗂️ Indexing"]
-        C --> D["OpenAI\nEmbeddings"]
-        D --> E["FAISS\nVector Index"]
+    subgraph Indexing["Indexing"]
+        C --> D["OpenAI Embeddings"]
+        D --> E["FAISS Vector Index"]
     end
 
-    subgraph RAG["🤖 Agentic RAG (LangGraph)"]
-        F["User Query"] --> G["Retrieve\n(Top-K Chunks)"]
-        G --> H["ReAct Agent\n(GPT-4o-mini)"]
-        H --> I["Citation-Aware\nAnswer"]
+    subgraph RAG["Agentic RAG - LangGraph"]
+        F["User Query"] --> G["Retrieve Top-K Chunks"]
+        G --> H["ReAct Agent GPT-4o-mini"]
+        H --> I["Citation-Aware Answer"]
     end
 
-    E -.->|load index| G
+    E -.-> G
 
-    subgraph Serve["🖥️ Delivery"]
+    subgraph Serve["Delivery"]
         I --> J["Streamlit UI"]
         I --> K["CLI"]
     end
 
-    subgraph Ops["⚙️ Ops"]
-        L["DVC\nReproducibility"] -.-> Ingestion
+    subgraph Ops["Ops"]
+        L["DVC Reproducibility"] -.-> Ingestion
         L -.-> Indexing
         M["Docker + CI/CD"] -.-> Serve
     end
