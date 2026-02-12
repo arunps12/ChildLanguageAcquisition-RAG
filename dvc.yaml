@@ -1,24 +1,24 @@
 stages:
-  build_faiss_index:
-    cmd: >
-      python -c "from main import main; main(rebuild_index=True)"
+  validate_metadata:
+    cmd: python -m childlanguagenet.cli validate-metadata --metadata data/metadata.json --out artifacts/metadata_validation.json
     deps:
-      # Entry point
-      - main.py
-
-      # Core library files
-      - childlanguagenet/config/config.py
-      - childlanguagenet/document_ingestion/document_processor.py
-      - childlanguagenet/vectorstore/vectorstore.py
-      - childlanguagenet/graph_builder/graph_builder.py
-      - childlanguagenet/node/react_node.py
-      - childlanguagenet/node/rag_nodes.py
-      - childlanguagenet/state/rag_state.py
-
-      # Registry + corpus
       - data/metadata.json
-      - data/pdf
-
     outs:
-      # Persisted FAISS index directory
-      - data/index/faiss
+      - artifacts/metadata_validation.json:
+          cache: false
+
+  ingest:
+    cmd: python -m childlanguagenet.cli ingest --metadata data/metadata.json --out artifacts/ingested_texts/
+    deps:
+      - data/metadata.json
+      - data/pdf/
+      - artifacts/metadata_validation.json
+    outs:
+      - artifacts/ingested_texts/
+
+  build_index:
+    cmd: python -m childlanguagenet.cli build-index --inputs artifacts/ingested_texts/ --out data/index/faiss/
+    deps:
+      - artifacts/ingested_texts/
+    outs:
+      - data/index/faiss/

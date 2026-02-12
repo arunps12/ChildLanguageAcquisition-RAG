@@ -267,3 +267,7 @@ def serve_streamlit():
         "--server.address=0.0.0.0",
     ]
     subprocess.run(cmd, check=True)
+
+
+if __name__ == "__main__":
+    main()
