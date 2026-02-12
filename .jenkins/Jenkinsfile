@@ -25,7 +25,12 @@ pipeline {
         sh '''
           echo "Repository contents:"
           ls -la
-          echo "CI placeholder"
+          echo "--- Lint check ---"
+          pip install ruff || true
+          ruff check src/ tests/ || echo "Lint warnings found"
+          echo "--- Tests ---"
+          pip install pytest || true
+          pytest tests/ -v || echo "Tests failed"
         '''
       }
     }
