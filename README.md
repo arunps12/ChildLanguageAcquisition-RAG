@@ -119,12 +119,43 @@ ChildLanguageAcquisition-RAG/
 
 ### For Researchers (end users)
 
-If the app is already deployed (e.g., on AWS EC2), **no setup is required**:
+#### Option A — Run locally without Docker
 
-1. Open the provided URL in your browser (e.g., `http://<server-ip>:8501`)
-2. Type your research question and get citation-aware answers
+```bash
+# 1. Clone the repository
+git clone https://github.com/<your-org>/ChildLanguageAcquisition-RAG.git
+cd ChildLanguageAcquisition-RAG
 
-No git clone, no API key, no index building — everything runs server-side.
+# 2. Install dependencies
+pip install uv && uv sync && source .venv/bin/activate
+
+# 3. Set your API key
+cp .env.example .env
+# Edit .env and set OPENAI_API_KEY=sk-...
+
+# 4. Launch the app (index auto-builds on first run)
+childrag-serve
+```
+
+Open http://localhost:8501
+
+#### Option B — Run locally with Docker (one command)
+
+If the app is **not** deployed, you can run it on your own machine using Docker. You only need [Docker](https://docs.docker.com/get-docker/) installed and an OpenAI API key.
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/<your-org>/ChildLanguageAcquisition-RAG.git
+cd ChildLanguageAcquisition-RAG
+
+# 2. Launch (builds the image + starts the app)
+OPENAI_API_KEY=sk-... docker compose up
+```
+
+Open http://localhost:8501 — the app auto-builds the index on first launch.
+
+> **No Python, no dependencies, no index building required** — Docker handles everything.
+> You only need to supply your `OPENAI_API_KEY`.
 
 ---
 
@@ -185,11 +216,12 @@ Open http://localhost:8501
 
 ### Who needs what?
 
-| Scenario | Clone repo? | API key? | PDFs? | Build index? |
-|---|---|---|---|---|
-| **Researcher** using the deployed app | No | No (server-side) | No | No |
-| **Developer** with `dvc pull` | Yes | Yes (`.env`) | No | No |
-| **Developer** building from scratch | Yes | Yes (`.env`) | Yes | Yes |
+| Scenario | Clone repo? | Docker? | API key? | PDFs? | Build index? |
+|---|---|---|---|---|---|
+| **Researcher** — local without Docker | Yes | No | Yes (`.env`) | No | No (auto) |
+| **Researcher** — local with Docker | Yes | Yes | Yes | No | No (auto) |
+| **Developer** with `dvc pull` | Yes | No | Yes (`.env`) | No | No |
+| **Developer** building from scratch | Yes | No | Yes (`.env`) | Yes | Yes |
 
 ---
 
