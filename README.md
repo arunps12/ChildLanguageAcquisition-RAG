@@ -115,9 +115,29 @@ ChildLanguageAcquisition-RAG/
 
 ---
 
-## Quick Start
+## Usage
 
-### 1. Install dependencies (uv recommended)
+### For Researchers (end users)
+
+If the app is already deployed (e.g., on AWS EC2), **no setup is required**:
+
+1. Open the provided URL in your browser (e.g., `http://<server-ip>:8501`)
+2. Type your research question and get citation-aware answers
+
+No git clone, no API key, no index building — everything runs server-side.
+
+---
+
+### For Developers (local setup)
+
+#### 1. Clone the repository
+
+```bash
+git clone https://github.com/<your-org>/ChildLanguageAcquisition-RAG.git
+cd ChildLanguageAcquisition-RAG
+```
+
+#### 2. Install dependencies (uv recommended)
 
 ```bash
 pip install uv
@@ -125,20 +145,34 @@ uv sync
 source .venv/bin/activate
 ```
 
-### 2. Environment variables
+#### 3. Environment variables
 
 ```bash
 cp .env.example .env
 # Edit .env and set OPENAI_API_KEY=sk-...
 ```
 
-### 3. Build the FAISS index
+#### 4. Build the FAISS index
 
 ```bash
 childrag-index
 ```
 
-### 4. Run the Streamlit app
+> **Don't want to build the index yourself?** You have two options:
+>
+> 1. **Pull the pre-built index** — if a [DVC remote](https://dvc.org/doc/user-guide/data-management/remote-storage) is configured, just run:
+>
+>    ```bash
+>    dvc pull
+>    ```
+>
+>    This downloads the ready-to-use FAISS index. **No PDFs needed** — go straight to Step 5.
+>
+> 2. **Auto-build on first launch** — if no index is found, the Streamlit app automatically builds one from `data/pdf/` + `metadata.json` when you open it.
+>
+> In both cases, an `OPENAI_API_KEY` is still required in your `.env` (it's used at query time to embed your question and generate answers).
+
+#### 5. Run the Streamlit app
 
 ```bash
 childrag-serve
@@ -146,6 +180,16 @@ childrag-serve
 ```
 
 Open http://localhost:8501
+
+---
+
+### Who needs what?
+
+| Scenario | Clone repo? | API key? | PDFs? | Build index? |
+|---|---|---|---|---|
+| **Researcher** using the deployed app | No | No (server-side) | No | No |
+| **Developer** with `dvc pull` | Yes | Yes (`.env`) | No | No |
+| **Developer** building from scratch | Yes | Yes (`.env`) | Yes | Yes |
 
 ---
 
