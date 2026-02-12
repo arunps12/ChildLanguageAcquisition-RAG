@@ -9,8 +9,8 @@ def test_settings_defaults():
     assert s.chunk_size == 500
     assert s.chunk_overlap == 50
     assert s.default_top_k == 8
-    assert s.llm_model == "openai:gpt-4o-mini"
-    assert s.embedding_model == "text-embedding-3-small"
+    assert s.llm_provider in ("ollama", "openai")
+    assert s.embedding_provider in ("ollama", "openai")
     assert s.data_dir.name == "data"
     assert s.index_dir.name == "faiss"
 

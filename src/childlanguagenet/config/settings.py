@@ -47,14 +47,27 @@ class Settings:
     index_dir: Path = field(default_factory=lambda: PROJECT_ROOT / "data" / "index" / "faiss")
     artifacts_dir: Path = field(default_factory=lambda: PROJECT_ROOT / "artifacts")
 
+    # --- Provider selection ("ollama" or "openai") -------------------------
+    llm_provider: str = field(
+        default_factory=lambda: os.getenv("LLM_PROVIDER", "ollama")
+    )
+    embedding_provider: str = field(
+        default_factory=lambda: os.getenv("EMBEDDING_PROVIDER", "ollama")
+    )
+
     # --- API keys --------------------------------------------------------
     openai_api_key: Optional[str] = field(
         default_factory=lambda: os.getenv("OPENAI_API_KEY")
     )
 
+    # --- Ollama ----------------------------------------------------------
+    ollama_base_url: str = field(
+        default_factory=lambda: os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
+    )
+
     # --- LLM -------------------------------------------------------------
     llm_model: str = field(
-        default_factory=lambda: os.getenv("LLM_MODEL", "openai:gpt-4o-mini")
+        default_factory=lambda: os.getenv("LLM_MODEL", "llama3.2")
     )
     temperature: float = field(
         default_factory=lambda: float(os.getenv("TEMPERATURE", "0.2"))
@@ -65,7 +78,7 @@ class Settings:
 
     # --- Embeddings ------------------------------------------------------
     embedding_model: str = field(
-        default_factory=lambda: os.getenv("EMBEDDING_MODEL", "text-embedding-3-small")
+        default_factory=lambda: os.getenv("EMBEDDING_MODEL", "nomic-embed-text")
     )
     embedding_batch_size: int = field(
         default_factory=lambda: int(os.getenv("EMBEDDING_BATCH_SIZE", "64"))
@@ -110,6 +123,11 @@ class Settings:
     )
 
     # --- Helpers ---------------------------------------------------------
+    @property
+    def uses_openai(self) -> bool:
+        """Return True if either LLM or embedding provider is openai."""
+        return self.llm_provider == "openai" or self.embedding_provider == "openai"
+
     def require_openai_key(self) -> str:
         """Return the OpenAI API key or raise with a clear message."""
         if not self.openai_api_key:

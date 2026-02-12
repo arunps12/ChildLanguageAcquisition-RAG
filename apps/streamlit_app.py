@@ -8,16 +8,15 @@ Run with:
 from __future__ import annotations
 
 import time
-from pathlib import Path
 
 import streamlit as st
 
 from childlanguagenet.config.settings import get_settings
 from childlanguagenet.embeddings.embedder import get_embeddings
-from childlanguagenet.vectorstore.faiss_store import FAISSStore
 from childlanguagenet.graph.rag_graph import build_rag_graph, run_query
 from childlanguagenet.telemetry.logging import get_logger
 from childlanguagenet.telemetry.metrics import get_metrics
+from childlanguagenet.vectorstore.faiss_store import FAISSStore
 
 logger = get_logger(__name__)
 metrics = get_metrics()
@@ -50,9 +49,9 @@ def _load_store():
         logger.info("Loaded existing FAISS index from %s", settings.index_dir)
     except FileNotFoundError:
         logger.warning("No index found — building from metadata …")
-        from childlanguagenet.ingestion.metadata_registry import validate_metadata
-        from childlanguagenet.ingestion.loaders import load_all_papers
         from childlanguagenet.ingestion.chunking import chunk_documents
+        from childlanguagenet.ingestion.loaders import load_all_papers
+        from childlanguagenet.ingestion.metadata_registry import validate_metadata
 
         records = validate_metadata(settings.metadata_file, data_dir=settings.data_dir)
         docs = load_all_papers(records, data_dir=settings.data_dir)
@@ -67,6 +66,18 @@ def _load_store():
 @st.cache_resource(show_spinner="Initializing LLM …")
 def _get_llm():
     settings = get_settings()
+
+    if settings.llm_provider == "ollama":
+        from langchain_ollama import ChatOllama
+
+        return ChatOllama(
+            model=settings.llm_model,
+            base_url=settings.ollama_base_url,
+            temperature=settings.temperature,
+            num_predict=settings.max_tokens,
+        )
+
+    # OpenAI provider
     settings.require_openai_key()
     import os
 
@@ -165,7 +176,7 @@ def main():
         try:
             llm = _get_llm()
         except Exception as exc:
-            st.error(f"LLM initialization failed — check your OPENAI_API_KEY: {exc}")
+            st.error(f"LLM initialization failed: {exc}")
             return
 
         graph = build_rag_graph(retriever=store.get_retriever(), llm=llm)

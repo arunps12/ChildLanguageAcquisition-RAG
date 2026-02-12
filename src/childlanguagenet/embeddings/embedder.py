@@ -1,11 +1,9 @@
-"""Embedding helper — OpenAI (default) or local sentence-transformers (flag)."""
+"""Embedding helper — Ollama (default), OpenAI, or local sentence-transformers."""
 
 from __future__ import annotations
 
 import hashlib
 from typing import TYPE_CHECKING
-
-from langchain_openai import OpenAIEmbeddings
 
 if TYPE_CHECKING:
     from childlanguagenet.config.settings import Settings
@@ -14,12 +12,13 @@ if TYPE_CHECKING:
 def get_embeddings(settings: "Settings"):
     """Return an embedding model instance based on settings.
 
-    * Default: OpenAI ``text-embedding-3-small``
+    Providers (``settings.embedding_provider``):
+    * ``"ollama"`` (default) — uses Ollama with ``nomic-embed-text``
+    * ``"openai"`` — uses OpenAI ``text-embedding-3-small`` (requires API key)
     * If ``settings.use_local_embeddings`` is ``True``, uses a local
       sentence-transformer model (requires ``sentence-transformers``).
     """
-    settings.require_openai_key()
-
+    # --- Local sentence-transformers (legacy flag) -----------------------
     if settings.use_local_embeddings:
         try:
             from langchain_community.embeddings import HuggingFaceEmbeddings
@@ -31,9 +30,28 @@ def get_embeddings(settings: "Settings"):
                 "Install it with: pip install sentence-transformers"
             ) from exc
 
-    return OpenAIEmbeddings(
-        model=settings.embedding_model,
-        openai_api_key=settings.openai_api_key,
+    # --- Ollama (default) ------------------------------------------------
+    if settings.embedding_provider == "ollama":
+        from langchain_ollama import OllamaEmbeddings
+
+        return OllamaEmbeddings(
+            model=settings.embedding_model,
+            base_url=settings.ollama_base_url,
+        )
+
+    # --- OpenAI ----------------------------------------------------------
+    if settings.embedding_provider == "openai":
+        settings.require_openai_key()
+        from langchain_openai import OpenAIEmbeddings
+
+        return OpenAIEmbeddings(
+            model=settings.embedding_model,
+            openai_api_key=settings.openai_api_key,
+        )
+
+    raise ValueError(
+        f"Unknown embedding_provider '{settings.embedding_provider}'. "
+        "Use 'ollama' or 'openai'."
     )
 
 
