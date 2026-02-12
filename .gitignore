@@ -103,7 +103,6 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-.env
 .venv
 env/
 venv/
@@ -160,11 +159,10 @@ models/
 # data/pdf/*.pdf
 *.tmp
 
-# API keys and secrets
-.env.local
-.env.*.local
+# Secrets (keep API keys out of git)
 secrets.json
 config.local.yml
+config.local.toml
 
 # Logs
 logs/

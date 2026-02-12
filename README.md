@@ -14,7 +14,7 @@
 
 A **metadata-first, agentic Retrieval-Augmented Generation (RAG)** system for **child language acquisition research**, built with **LangChain, LangGraph, FAISS, Ollama, and Streamlit**.
 
-> **No API key required.** The app runs entirely locally using [Ollama](https://ollama.com/) for both embeddings and LLM inference.
+> **Runs entirely locally** using [Ollama](https://ollama.com/) — no API keys, no cloud services, no cost.
 
 The system enables researchers to query a curated corpus of academic papers (PDFs and web-based sources) and obtain **grounded, citation-aware answers** through an agentic retrieval and generation workflow.
 
@@ -106,6 +106,7 @@ ChildLanguageAcquisition-RAG/
 ├── tests/                             # Pytest test suite
 │
 ├── dvc.yaml                           # DVC pipeline stages
+├── config.toml                        # All settings (committed, no secrets)
 ├── Dockerfile                         # Production Docker image
 ├── docker-compose.yml                 # Local dev + deployment
 ├── .github/workflows/ci.yml           # GitHub Actions CI
@@ -137,11 +138,10 @@ ollama pull nomic-embed-text
 pip install uv && uv sync && source .venv/bin/activate
 
 # 4. Launch the app (index auto-builds on first run)
-cp .env.example .env   # defaults to Ollama — no API key needed
 childrag-serve
 ```
 
-Open http://localhost:8501 — **no API key required**.
+Open http://localhost:8501 and start asking questions.
 
 #### Option B — Run locally with Docker (one command)
 
@@ -161,7 +161,7 @@ docker compose up
 
 Open http://localhost:8501 — the app auto-builds the index on first launch.
 
-> **No API key, no Python setup required** — Docker + Ollama handle everything.
+> **No Python setup required** — Docker + Ollama handle everything.
 
 ---
 
@@ -188,13 +188,6 @@ source .venv/bin/activate
 # One-time setup — https://ollama.com/download
 ollama pull llama3.2
 ollama pull nomic-embed-text
-```
-
-#### 4. Environment variables
-
-```bash
-cp .env.example .env
-# Defaults to Ollama — no API key needed
 ```
 
 #### 4. Build the FAISS index

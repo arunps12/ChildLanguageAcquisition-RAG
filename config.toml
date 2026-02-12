@@ -1,0 +1,36 @@
+# ChildLanguageNet RAG — Configuration
+# This file is committed to git. No secrets here — everything runs locally.
+# Override any value with an environment variable of the same name (UPPER_CASE).
+
+[llm]
+provider = "ollama"                     # "ollama" (local, free) or "openai"
+model = "llama3.2"
+temperature = 0.2
+max_tokens = 1024
+
+[embeddings]
+provider = "ollama"                     # "ollama" (local, free) or "openai"
+model = "nomic-embed-text"
+batch_size = 64
+use_local = false                       # true = sentence-transformers (CPU)
+
+[ollama]
+base_url = "http://localhost:11434"
+
+[chunking]
+chunk_size = 500
+chunk_overlap = 50
+
+[retrieval]
+default_top_k = 8
+
+[ui]
+title = "Child Language Research RAG"
+max_sources_display = 10
+
+[telemetry]
+log_level = "INFO"
+metrics_enabled = true
+
+[misc]
+user_agent = "childlanguagenet-rag/0.2 (research)"

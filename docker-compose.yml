@@ -9,12 +9,7 @@ services:
     ports:
       - "8501:8501"
     environment:
-      LLM_PROVIDER: "${LLM_PROVIDER:-ollama}"
-      EMBEDDING_PROVIDER: "${EMBEDDING_PROVIDER:-ollama}"
-      OLLAMA_BASE_URL: "${OLLAMA_BASE_URL:-http://host.docker.internal:11434}"
-      LLM_MODEL: "${LLM_MODEL:-llama3.2}"
-      EMBEDDING_MODEL: "${EMBEDDING_MODEL:-nomic-embed-text}"
-      OPENAI_API_KEY: "${OPENAI_API_KEY:-}"
+      OLLAMA_BASE_URL: "http://host.docker.internal:11434"
       STREAMLIT_SERVER_PORT: "8501"
       STREAMLIT_SERVER_ADDRESS: "0.0.0.0"
     extra_hosts:
