@@ -24,6 +24,48 @@ The project also includes a **production-oriented CI/CD pipeline** (GitHub Actio
 
 ---
 
+## How It Works
+
+```mermaid
+flowchart LR
+    subgraph Ingestion["📥 Ingestion Pipeline"]
+        A["metadata.json\n(Paper Registry)"] --> B["PDF / URL\nLoaders"]
+        B --> C["Deterministic\nChunker"]
+    end
+
+    subgraph Indexing["🗂️ Indexing"]
+        C --> D["OpenAI\nEmbeddings"]
+        D --> E["FAISS\nVector Index"]
+    end
+
+    subgraph RAG["🤖 Agentic RAG (LangGraph)"]
+        F["User Query"] --> G["Retrieve\n(Top-K Chunks)"]
+        G --> H["ReAct Agent\n(GPT-4o-mini)"]
+        H --> I["Citation-Aware\nAnswer"]
+    end
+
+    E -.->|load index| G
+
+    subgraph Serve["🖥️ Delivery"]
+        I --> J["Streamlit UI"]
+        I --> K["CLI"]
+    end
+
+    subgraph Ops["⚙️ Ops"]
+        L["DVC\nReproducibility"] -.-> Ingestion
+        L -.-> Indexing
+        M["Docker + CI/CD"] -.-> Serve
+    end
+
+    style Ingestion fill:#e8f4fd,stroke:#2196F3
+    style Indexing fill:#e8f5e9,stroke:#4CAF50
+    style RAG fill:#fff3e0,stroke:#FF9800
+    style Serve fill:#fce4ec,stroke:#E91E63
+    style Ops fill:#f3e5f5,stroke:#9C27B0
+```
+
+---
+
 ## Project Structure
 
 ```
