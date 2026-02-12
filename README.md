@@ -274,10 +274,31 @@ docker compose up
 
 ## Example Questions
 
-- What are the main characteristics of infant-directed speech discussed across these papers?
-- How does infant-directed speech differ from adult-directed speech?
-- What experimental methods are used to study early language development?
-- Which papers analyze prosodic or phonetic exaggeration in infant-directed speech?
+**Infant-Directed Speech**
+- What are the main acoustic differences between infant-directed and adult-directed speech?
+- How does vowel hyperarticulation in IDS vary across languages?
+- Is infant-directed speech consistent with a teaching hypothesis for phonetic categories?
+- What role does prosody play in infant word recognition and attention?
+
+**Daylong Recordings & Processing**
+- What tools exist for automatic analysis of daylong child-centered recordings (e.g., LENA, ALICE)?
+- How does audio quality in naturalistic recordings affect IDS research outcomes?
+- What are the best practices and ethical considerations for collecting daylong recordings?
+- How do automated speaker diarization systems perform on child-adult interactions?
+- What steps are involved in processing daylong recordings — from VAD and speaker diarization to voice type classification and word count estimation?
+- How do voice type classifiers and speech foundation models compare in identifying child vs. adult speech in naturalistic audio?
+
+**Parent-Child Interaction**
+- What is the relationship between conversational turn-taking and early language development?
+- How does socioeconomic status correlate with measures from daylong recordings?
+- What methods are used for speaker role diarization in child-adult dyadic interactions?
+
+**Computational Models**
+- What can artificial neural networks tell us about human language acquisition?
+- How do Bayesian models approach phonetic category learning from infant input?
+- Can grounded multimodal models learn word meanings from a child's egocentric visual input?
+- How effective is child-directed speech as training data for language models compared to other corpora?
+- What computational approaches exist for word segmentation in early language acquisition?
 
 ---
 
