@@ -1,0 +1,2 @@
+# Artifacts directory — reports, metrics, ingested texts.
+# This directory is tracked by DVC / gitignored for large outputs.
