@@ -20,7 +20,6 @@ All data processing steps — document ingestion, chunking, vector index constru
 
 The project also includes a **production-oriented CI/CD pipeline** (GitHub Actions + Jenkins/Docker), enabling automated builds, containerization, and deployment to **AWS EC2 via Amazon ECR**.
 
-![CI/CD Pipeline](docs/image/ci_cd_pipeline.png)
 
 ---
 
