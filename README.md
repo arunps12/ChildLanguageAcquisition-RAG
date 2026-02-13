@@ -126,7 +126,7 @@ ChildLanguageAcquisition-RAG/
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/arunps12/ChildLanguageAcquisition-RAG.git
+git clone [https://github.com/<your-org>/ChildLanguageAcquisition-RAG.git](https://github.com/arunps12/ChildLanguageAcquisition-RAG.git)
 cd ChildLanguageAcquisition-RAG
 
 # 2. Install Ollama (one-time) — https://ollama.com/download
