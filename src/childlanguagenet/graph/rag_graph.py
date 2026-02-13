@@ -5,10 +5,8 @@ from __future__ import annotations
 from typing import Any, Dict, List
 
 from langchain_core.documents import Document
-from langchain_core.messages import HumanMessage
-from langchain_core.tools import Tool
+from langchain_core.messages import HumanMessage, SystemMessage
 from langgraph.graph import END, StateGraph
-from langgraph.prebuilt import create_react_agent
 from pydantic import BaseModel, Field
 
 from childlanguagenet.citations.cite import Citation, format_sources_section
@@ -31,6 +29,14 @@ class RAGState(BaseModel):
 
 # ── Nodes ──────────────────────────────────────────────────────────────────
 
+_SYSTEM_PROMPT = (
+    "You are a research assistant specialising in child language acquisition.\n"
+    "Answer the user's question using ONLY the evidence provided below.\n"
+    "Cite sources by their paper_id (e.g. [vandam_2016]).\n"
+    "If the evidence is insufficient, say so clearly.\n"
+    "Do not invent facts or citations. Keep answers concise and research-oriented."
+)
+
 
 class RAGNodes:
     """Retrieval + generation nodes for the graph."""
@@ -38,7 +44,6 @@ class RAGNodes:
     def __init__(self, retriever, llm):
         self.retriever = retriever
         self.llm = llm
-        self._agent = None
 
     # -- retrieval -------------------------------------------------------
 
@@ -50,52 +55,40 @@ class RAGNodes:
             retrieved_chunks=docs,
         )
 
-    # -- tool-augmented generation (ReAct) -------------------------------
+    # -- generation (context-stuffing) -----------------------------------
 
-    def _build_agent(self) -> None:
-        def retriever_fn(query: str) -> str:
-            docs: List[Document] = self.retriever.invoke(query)
-            if not docs:
-                return "No documents found."
-            parts = []
-            for i, d in enumerate(docs[:8], 1):
-                meta = d.metadata or {}
-                pid = meta.get("paper_id", f"doc_{i}")
-                title = meta.get("title", "Unknown")
-                year = meta.get("year", "n.d.")
-                header = f"[{i}] {pid} | {title} ({year})"
-                doi = meta.get("doi")
-                if doi:
-                    header += f" | DOI: {doi}"
-                parts.append(f"{header}\n{d.page_content}")
-            return "\n\n".join(parts)
-
-        tools = [
-            Tool(
-                name="retriever",
-                description="Search the child language acquisition corpus for evidence.",
-                func=retriever_fn,
-            )
-        ]
-
-        system_prompt = (
-            "You are a research assistant for child language acquisition.\n"
-            "Use the 'retriever' tool to gather evidence before answering.\n"
-            "If evidence is insufficient, say so clearly.\n"
-            "Do not invent citations. Keep answers concise and research-oriented."
-        )
-        self._agent = create_react_agent(self.llm, tools=tools, prompt=system_prompt)
+    @staticmethod
+    def _format_context(docs: List[Document]) -> str:
+        """Build a numbered evidence block from retrieved chunks."""
+        parts: list[str] = []
+        for i, d in enumerate(docs[:12], 1):
+            meta = d.metadata or {}
+            pid = meta.get("paper_id", f"doc_{i}")
+            title = meta.get("title", "Unknown")
+            year = meta.get("year", "n.d.")
+            header = f"[{i}] {pid} | {title} ({year})"
+            doi = meta.get("doi")
+            if doi:
+                header += f" | DOI: {doi}"
+            parts.append(f"{header}\n{d.page_content}")
+        return "\n\n---\n\n".join(parts)
 
     def generate(self, state: RAGState) -> RAGState:
-        """Generate answer using ReAct agent, then extract citations."""
-        if self._agent is None:
-            self._build_agent()
+        """Generate answer from pre-retrieved chunks, then extract citations."""
+        context = self._format_context(state.retrieved_chunks)
 
-        result = self._agent.invoke(
-            {"messages": [HumanMessage(content=state.user_query)]}
+        user_msg = (
+            f"## Evidence\n\n{context}\n\n---\n\n"
+            f"## Question\n\n{state.user_query}\n\n"
+            "Provide a detailed answer based on the evidence above, "
+            "citing sources by their paper_id."
         )
-        messages = result.get("messages", [])
-        answer = messages[-1].content if messages else "No answer generated."
+
+        response = self.llm.invoke([
+            SystemMessage(content=_SYSTEM_PROMPT),
+            HumanMessage(content=user_msg),
+        ])
+        answer = response.content if hasattr(response, "content") else str(response)
 
         # Extract deduplicated citations from retrieved chunks
         citations: List[Citation] = []
