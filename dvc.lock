@@ -1,0 +1,53 @@
+schema: '2.0'
+stages:
+  validate_metadata:
+    cmd: python -m childlanguagenet.cli validate-metadata --metadata 
+      data/metadata.json --out artifacts/metadata_validation.json
+    deps:
+    - path: data/metadata.json
+      hash: md5
+      md5: fef0bf50d837015d5110f3f7619d6bbb
+      size: 39252
+    outs:
+    - path: artifacts/metadata_validation.json
+      hash: md5
+      md5: 422bbb4bf4d4292860409ece3d47b98b
+      size: 38
+  ingest:
+    cmd: python -m childlanguagenet.cli ingest --metadata data/metadata.json 
+      --out artifacts/ingested_texts/
+    deps:
+    - path: artifacts/metadata_validation.json
+      hash: md5
+      md5: 422bbb4bf4d4292860409ece3d47b98b
+      size: 38
+    - path: data/metadata.json
+      hash: md5
+      md5: fef0bf50d837015d5110f3f7619d6bbb
+      size: 39252
+    - path: data/pdf/
+      hash: md5
+      md5: 1fc5eda463aff563602a115f5284bc16.dir
+      size: 89229416
+      nfiles: 61
+    outs:
+    - path: artifacts/ingested_texts/
+      hash: md5
+      md5: ec19801398767d97bd5e62226cec1319.dir
+      size: 16764173
+      nfiles: 1
+  build_index:
+    cmd: python -m childlanguagenet.cli build-index --inputs 
+      artifacts/ingested_texts/ --out data/index/faiss/
+    deps:
+    - path: artifacts/ingested_texts/
+      hash: md5
+      md5: ec19801398767d97bd5e62226cec1319.dir
+      size: 16764173
+      nfiles: 1
+    outs:
+    - path: data/index/faiss/
+      hash: md5
+      md5: c7ec36c3295eaf54f0cde53a07b33cd3.dir
+      size: 75690109
+      nfiles: 3

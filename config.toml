@@ -1,21 +1,19 @@
 # ChildLanguageNet RAG — Configuration
-# This file is committed to git. No secrets here — everything runs locally.
+# This file is committed to git. No secrets here.
 # Override any value with an environment variable of the same name (UPPER_CASE).
+# Set OPENAI_API_KEY in your .env file.
 
 [llm]
-provider = "ollama"                     # "ollama" (local, free) or "openai"
-model = "llama3.2"
+provider = "openai"
+model = "openai:gpt-4o"
 temperature = 0.2
 max_tokens = 1024
 
 [embeddings]
-provider = "ollama"                     # "ollama" (local, free) or "openai"
-model = "nomic-embed-text"
+provider = "openai"
+model = "text-embedding-3-small"
 batch_size = 64
 use_local = false                       # true = sentence-transformers (CPU)
-
-[ollama]
-base_url = "http://localhost:11434"
 
 [chunking]
 chunk_size = 500

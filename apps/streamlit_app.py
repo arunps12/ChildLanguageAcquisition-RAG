@@ -66,18 +66,6 @@ def _load_store():
 @st.cache_resource(show_spinner="Initializing LLM …")
 def _get_llm():
     settings = get_settings()
-
-    if settings.llm_provider == "ollama":
-        from langchain_ollama import ChatOllama
-
-        return ChatOllama(
-            model=settings.llm_model,
-            base_url=settings.ollama_base_url,
-            temperature=settings.temperature,
-            num_predict=settings.max_tokens,
-        )
-
-    # OpenAI provider
     settings.require_openai_key()
     import os
 

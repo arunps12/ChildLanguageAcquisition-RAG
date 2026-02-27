@@ -13,6 +13,8 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Any, Optional
 
+from dotenv import load_dotenv
+
 # ---------------------------------------------------------------------------
 # Resolve project root: walk up from this file until we find pyproject.toml
 # ---------------------------------------------------------------------------
@@ -31,6 +33,11 @@ def _find_project_root() -> Path:
 
 
 PROJECT_ROOT = _find_project_root()
+
+# ---------------------------------------------------------------------------
+# Load .env file (OPENAI_API_KEY, etc.)
+# ---------------------------------------------------------------------------
+load_dotenv(PROJECT_ROOT / ".env")
 
 # ---------------------------------------------------------------------------
 # Load config.toml — env vars always win (for Docker / CI overrides)
@@ -72,31 +79,24 @@ class Settings:
     index_dir: Path = field(default_factory=lambda: PROJECT_ROOT / "data" / "index" / "faiss")
     artifacts_dir: Path = field(default_factory=lambda: PROJECT_ROOT / "artifacts")
 
-    # --- Provider selection ("ollama" or "openai") -------------------------
+    # --- Provider selection -----------------------------------------------
     llm_provider: str = field(
-        default_factory=lambda: _cfg("LLM_PROVIDER", "llm", "provider", default="ollama")
+        default_factory=lambda: _cfg("LLM_PROVIDER", "llm", "provider", default="openai")
     )
     embedding_provider: str = field(
         default_factory=lambda: _cfg(
-            "EMBEDDING_PROVIDER", "embeddings", "provider", default="ollama"
+            "EMBEDDING_PROVIDER", "embeddings", "provider", default="openai"
         )
     )
 
-    # --- API keys (only needed when provider=openai) ----------------------
+    # --- API keys ---------------------------------------------------------
     openai_api_key: Optional[str] = field(
         default_factory=lambda: os.getenv("OPENAI_API_KEY")
     )
 
-    # --- Ollama ----------------------------------------------------------
-    ollama_base_url: str = field(
-        default_factory=lambda: _cfg(
-            "OLLAMA_BASE_URL", "ollama", "base_url", default="http://localhost:11434"
-        )
-    )
-
     # --- LLM -------------------------------------------------------------
     llm_model: str = field(
-        default_factory=lambda: _cfg("LLM_MODEL", "llm", "model", default="llama3.2")
+        default_factory=lambda: _cfg("LLM_MODEL", "llm", "model", default="openai:gpt-4o")
     )
     temperature: float = field(
         default_factory=lambda: float(
@@ -112,7 +112,7 @@ class Settings:
     # --- Embeddings ------------------------------------------------------
     embedding_model: str = field(
         default_factory=lambda: _cfg(
-            "EMBEDDING_MODEL", "embeddings", "model", default="nomic-embed-text"
+            "EMBEDDING_MODEL", "embeddings", "model", default="text-embedding-3-small"
         )
     )
     embedding_batch_size: int = field(

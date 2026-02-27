@@ -1,7 +1,7 @@
 # ChildLanguageAcquisition-RAG
 
 [![Python](https://img.shields.io/badge/Python-3.13-3776AB?logo=python&logoColor=white)](https://www.python.org/)
-[![Ollama](https://img.shields.io/badge/Ollama-Local_LLM-000000?logo=ollama&logoColor=white)](https://ollama.com/)
+[![OpenAI](https://img.shields.io/badge/OpenAI-GPT--4o-412991?logo=openai&logoColor=white)](https://openai.com/)
 [![LangChain](https://img.shields.io/badge/LangChain-🦜-1C3C3C)](https://www.langchain.com/)
 [![LangGraph](https://img.shields.io/badge/LangGraph-Agentic-2D9CDB)](https://langchain-ai.github.io/langgraph/)
 [![FAISS](https://img.shields.io/badge/FAISS-Vector_Search-0467DF?logo=meta&logoColor=white)](https://github.com/facebookresearch/faiss)
@@ -12,9 +12,9 @@
 [![Ruff](https://img.shields.io/badge/Ruff-Linter-D7FF64?logo=ruff&logoColor=black)](https://docs.astral.sh/ruff/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-A **metadata-first, agentic Retrieval-Augmented Generation (RAG)** system for **child language acquisition research**, built with **LangChain, LangGraph, FAISS, Ollama, and Streamlit**.
+A **metadata-first, agentic Retrieval-Augmented Generation (RAG)** system for **child language acquisition research**, built with **LangChain, LangGraph, FAISS, OpenAI, and Streamlit**.
 
-> **Runs entirely locally** using [Ollama](https://ollama.com/) — no API keys, no cloud services, no cost.
+> Powered by **OpenAI GPT-4o** — requires an `OPENAI_API_KEY` set in a `.env` file.
 
 The system enables researchers to query a curated corpus of academic papers (PDFs and web-based sources) and obtain **grounded, citation-aware answers** through an agentic retrieval and generation workflow.
 
@@ -35,13 +35,13 @@ flowchart LR
     end
 
     subgraph Indexing["Indexing"]
-        C --> D["Ollama Embeddings"]
+        C --> D["OpenAI Embeddings"]
         D --> E["FAISS\nVector Index"]
     end
 
     subgraph RAG["Agentic RAG - LangGraph"]
         F["User Query"] --> G["Retrieve Top-K Chunks"]
-        G --> H["ReAct Agent - Ollama LLM"]
+        G --> H["ReAct Agent - OpenAI GPT-4o"]
         H --> I["Citation-Aware Answer"]
     end
 
@@ -82,7 +82,7 @@ ChildLanguageAcquisition-RAG/
 │       │   ├── loaders.py             # PDF + URL loaders
 │       │   └── chunking.py            # Deterministic chunking
 │       ├── embeddings/
-│       │   └── embedder.py            # Ollama / local embeddings
+│       │   └── embedder.py            # OpenAI / local embeddings
 │       ├── vectorstore/
 │       │   ├── faiss_store.py         # FAISS build / load / retrieve
 │       │   └── persistence.py         # Chunks JSONL + manifest
@@ -129,10 +129,8 @@ ChildLanguageAcquisition-RAG/
 git clone https://github.com/arunps12/ChildLanguageAcquisition-RAG.git
 cd ChildLanguageAcquisition-RAG
 
-# 2. Install Ollama (one-time) — https://ollama.com/download
-curl -fsSL https://ollama.com/install.sh | sh
-ollama pull llama3.2
-ollama pull nomic-embed-text
+# 2. Create a .env file with your OpenAI API key
+echo 'OPENAI_API_KEY=sk-your-key-here' > .env
 
 # 3. Install dependencies
 pip install uv && uv sync && source .venv/bin/activate
@@ -145,15 +143,15 @@ Open http://localhost:8501 and start asking questions.
 
 #### Option B — Run locally with Docker (one command)
 
-If the app is **not** deployed, you can run it on your own machine using Docker. You only need [Docker](https://docs.docker.com/get-docker/) and [Ollama](https://ollama.com/download) installed.
+If the app is **not** deployed, you can run it on your own machine using Docker. You only need [Docker](https://docs.docker.com/get-docker/) installed.
 
 ```bash
 # 1. Clone the repository
 git clone https://github.com/<your-org>/ChildLanguageAcquisition-RAG.git
 cd ChildLanguageAcquisition-RAG
 
-# 2. Ensure Ollama is running with required models
-ollama pull llama3.2 && ollama pull nomic-embed-text
+# 2. Create a .env file with your OpenAI API key
+echo 'OPENAI_API_KEY=sk-your-key-here' > .env
 
 # 3. Launch (builds the image + starts the app)
 docker compose up
@@ -161,7 +159,7 @@ docker compose up
 
 Open http://localhost:8501 — the app auto-builds the index on first launch.
 
-> **No Python setup required** — Docker + Ollama handle everything.
+> **No Python setup required** — Docker handles everything.
 
 ---
 
@@ -182,12 +180,10 @@ uv sync --extra dev
 source .venv/bin/activate
 ```
 
-#### 3. Install Ollama models
+#### 3. Set up your OpenAI API key
 
 ```bash
-# One-time setup — https://ollama.com/download
-ollama pull llama3.2
-ollama pull nomic-embed-text
+echo 'OPENAI_API_KEY=sk-your-key-here' > .env
 ```
 
 #### 4. Build the FAISS index
@@ -208,7 +204,7 @@ childrag-index
 >
 > 2. **Auto-build on first launch** — if no index is found, the Streamlit app automatically builds one from `data/pdf/` + `metadata.json` when you open it.
 >
-> In both cases, Ollama must be running locally.
+> In both cases, `OPENAI_API_KEY` must be set in your `.env` file.
 
 #### 5. Run the Streamlit app
 
@@ -223,7 +219,7 @@ Open http://localhost:8501
 
 ### Who needs what?
 
-| Scenario | Clone repo? | Docker? | Ollama? | PDFs? | Build index? |
+| Scenario | Clone repo? | Docker? | API Key? | PDFs? | Build index? |
 |---|---|---|---|---|---|
 | **Researcher** — local without Docker | Yes | No | Yes | No | No (auto) |
 | **Researcher** — local with Docker | Yes | Yes | Yes | No | No (auto) |
@@ -268,7 +264,7 @@ Or with docker-compose:
 docker compose up
 ```
 
-> Ollama must be running on the host. The container connects to `host.docker.internal:11434` by default.
+> The container reads `OPENAI_API_KEY` from the `.env` file automatically.
 
 ---
 
@@ -304,7 +300,7 @@ docker compose up
 
 ## Tech Stack
 
-- **Ollama** — local LLM + embeddings (llama3.2, nomic-embed-text)
+- **OpenAI** — GPT-4o LLM + text-embedding-3-small embeddings
 - **LangChain** + **LangGraph** — RAG orchestration
 - **FAISS** — vector similarity search
 - **Streamlit** — interactive UI
