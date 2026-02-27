@@ -1,26 +1,32 @@
-#!bin/bash
+#!/usr/bin/env bash
+# ──────────────────────────────────────────────────────────────────────────
+# setup_scripts/ec2_setup.sh — Bootstrap a fresh Ubuntu EC2 instance
+# Run once after launching. SSH in, then: bash ec2_setup.sh
+# ──────────────────────────────────────────────────────────────────────────
+set -euo pipefail
 
-sudo apt update 
+echo "──── Updating system ────"
+sudo apt-get update -y && sudo apt-get upgrade -y
 
-sudo apt-get update 
+echo "──── Installing Docker ────"
+curl -fsSL https://get.docker.com -o /tmp/get-docker.sh
+sudo sh /tmp/get-docker.sh
+sudo usermod -aG docker "$USER"
 
-sudo apt upgrade -y
+echo "──── Installing AWS CLI v2 ────"
+if ! command -v aws &>/dev/null; then
+  curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o /tmp/awscliv2.zip
+  sudo apt-get install -y unzip
+  unzip -qo /tmp/awscliv2.zip -d /tmp
+  sudo /tmp/aws/install
+  rm -rf /tmp/aws /tmp/awscliv2.zip
+fi
 
-curl -fsSL https://get.docker.com -o get-docker.sh
+echo "──── Installing Docker Compose plugin ────"
+sudo apt-get install -y docker-compose-plugin 2>/dev/null || true
 
-sudo sh get-docker.sh
-
-sudo usermod -aG docker $USER
-
-newgrp docker
-
-sudo apt install awscli -y
-
-
-
-## AWS configuration
-
-aws configure
-
-
-## Now setup elastic IP on AWS
+echo ""
+echo "============================================================"
+echo " Done! Log out and back in so Docker group takes effect."
+echo " Then run:  aws configure"
+echo "============================================================"

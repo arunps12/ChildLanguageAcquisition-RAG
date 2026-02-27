@@ -2,14 +2,12 @@ pipeline {
   agent any
 
   environment {
-    AWS_REGION = credentials('AWS_REGION')              
-    ECR_REPOSITORY = credentials('ECR_REPOSITORY')  
-    AWS_ACCOUNT_ID = credentials('AWS_ACCOUNT_ID')
-    AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
+    AWS_REGION         = credentials('AWS_REGION')
+    ECR_REPOSITORY     = credentials('ECR_REPOSITORY')
+    AWS_ACCOUNT_ID     = credentials('AWS_ACCOUNT_ID')
+    AWS_ACCESS_KEY_ID     = credentials('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
-
-    
-    APP_HOST = credentials('APP_HOST')
+    APP_HOST           = credentials('APP_HOST')
   }
 
   stages {
@@ -20,17 +18,17 @@ pipeline {
       }
     }
 
-    stage('Continuous Integration (basic)') {
+    stage('CI — Lint & Test') {
       steps {
         sh '''
-          echo "Repository contents:"
+          echo "=== Repository contents ==="
           ls -la
-          echo "--- Lint check ---"
-          pip install ruff || true
+          echo "=== Lint check ==="
+          pip install --quiet ruff || true
           ruff check src/ tests/ || echo "Lint warnings found"
-          echo "--- Tests ---"
-          pip install pytest || true
-          pytest tests/ -v || echo "Tests failed"
+          echo "=== Tests ==="
+          pip install --quiet pytest || true
+          pytest tests/ -v || echo "Some tests failed"
         '''
       }
     }
@@ -38,25 +36,24 @@ pipeline {
     stage('Login to ECR') {
       steps {
         sh '''
-          aws --version
           aws ecr get-login-password --region ${AWS_REGION} \
-            | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
+            | docker login --username AWS \
+              --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
         '''
       }
     }
 
-    stage('Build Image') {
+    stage('Build Docker Image') {
       steps {
         sh '''
           IMAGE_URI="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY}"
-          echo "Building image: ${IMAGE_URI}:${BUILD_NUMBER} and :latest"
-
+          echo "Building: ${IMAGE_URI}:${BUILD_NUMBER} and :latest"
           docker build -t ${IMAGE_URI}:${BUILD_NUMBER} -t ${IMAGE_URI}:latest .
         '''
       }
     }
 
-    stage('Push Image') {
+    stage('Push to ECR') {
       steps {
         sh '''
           IMAGE_URI="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY}"
@@ -66,36 +63,46 @@ pipeline {
       }
     }
 
-    stage('Continuous Deployment (App EC2)') {
+    stage('Deploy to EC2') {
       steps {
-       
         withCredentials([string(credentialsId: 'OPENAI_API_KEY', variable: 'OPENAI_API_KEY')]) {
           sshagent(['ssh_key']) {
-            sh '''
+            sh """
               IMAGE_URI="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY}:latest"
 
-              ssh -o StrictHostKeyChecking=no ubuntu@${APP_HOST} "
+              ssh -o StrictHostKeyChecking=no ubuntu@${APP_HOST} << 'ENDSSH'
                 set -e
-
-                # Fetch the latest docker-compose.yml directly from GitHub
-                curl -fsSL \
-                  https://raw.githubusercontent.com/arunps12/ChildLanguageAcquisition-RAG/main/docker-compose.yml \
-                  -o /home/ubuntu/docker-compose.yml
 
                 # Login to ECR
                 aws ecr get-login-password --region ${AWS_REGION} \
-                  | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
+                  | docker login --username AWS \
+                    --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
 
-                # Export runtime variables for docker-compose
-                export IMAGE_NAME=${IMAGE_URI}
-                export OPENAI_API_KEY='${OPENAI_API_KEY}'
+                # Write .env on the host (secrets from Jenkins credentials)
+                cat > /home/ubuntu/.env << 'ENVEOF'
+OPENAI_API_KEY=${OPENAI_API_KEY}
+USER_AGENT=childlanguagenet-rag/0.2
+ENVEOF
 
-                cd /home/ubuntu
-                docker compose pull
-                docker compose up -d
+                # Pull latest image
+                docker pull ${IMAGE_URI}
+
+                # Stop & remove old container
+                docker stop childlanguagenet 2>/dev/null || true
+                docker rm   childlanguagenet 2>/dev/null || true
+
+                # Run new container
+                docker run -d \
+                  --name childlanguagenet \
+                  --restart unless-stopped \
+                  -p 8501:8501 \
+                  --env-file /home/ubuntu/.env \
+                  ${IMAGE_URI}
+
+                echo "=== Running containers ==="
                 docker ps
-              "
-            '''
+ENDSSH
+            """
           }
         }
       }
@@ -103,8 +110,13 @@ pipeline {
   }
 
   post {
+    success {
+      echo "Deployment successful! App at http://${APP_HOST}:8501"
+    }
+    failure {
+      echo "Pipeline failed — check stage logs above."
+    }
     always {
-      
       sh 'docker system prune -f || true'
     }
   }

@@ -29,6 +29,7 @@ ENV PATH="/opt/venv/bin:${PATH}"
 RUN uv sync --frozen --no-dev --active
 
 # Copy application code
+COPY config.toml ./
 COPY src/ ./src/
 COPY apps/ ./apps/
 COPY data/ ./data/

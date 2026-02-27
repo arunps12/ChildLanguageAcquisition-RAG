@@ -1,12 +1,17 @@
-name: Trigger Jenkins Job
+name: Trigger Jenkins Deploy
 
 on:
+  workflow_run:
+    workflows: ["CI"]
+    types: [completed]
+    branches: [main]
   workflow_dispatch:
 
 jobs:
   trigger:
     name: Trigger Jenkins
     runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     steps:
       - name: Trigger Jenkins Job
         uses: appleboy/jenkins-action@master
