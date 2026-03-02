@@ -147,7 +147,7 @@ If the app is **not** deployed, you can run it on your own machine using Docker.
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/<your-org>/ChildLanguageAcquisition-RAG.git
+git clone https://github.com/arunps12/ChildLanguageAcquisition-RAG.git
 cd ChildLanguageAcquisition-RAG
 
 # 2. Create a .env file with your OpenAI API key
