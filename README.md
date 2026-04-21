@@ -168,7 +168,7 @@ Open http://localhost:8501 — the app auto-builds the index on first launch.
 #### 1. Clone the repository
 
 ```bash
-git clone https://github.com/<your-org>/ChildLanguageAcquisition-RAG.git
+git clone https://github.com/arunps12/ChildLanguageAcquisition-RAG.git
 cd ChildLanguageAcquisition-RAG
 ```
 
